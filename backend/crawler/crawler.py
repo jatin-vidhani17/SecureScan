@@ -4,16 +4,22 @@ from bs4 import BeautifulSoup
 from typing import Set, List
 
 class Crawler:
-    def __init__(self, target_url: str, max_depth: int = 3):
+    def __init__(self, target_url: str, max_depth: int = 3, log_callback=None):
         self.target_url = target_url
         self.max_depth = max_depth
         self.visited: Set[str] = set()
         self.to_visit: List[tuple[str, int]] = [(target_url, 0)]
         self.base_domain = urllib.parse.urlparse(target_url).netloc
+        self.log_callback = log_callback
+
+    def log(self, msg: str):
+        print(msg)
+        if self.log_callback:
+            self.log_callback(msg)
 
     def crawl(self) -> List[str]:
         """Crawls the target site and returns a list of discovered URLs within the same domain."""
-        print(f"Starting crawl for {self.target_url} up to depth {self.max_depth}")
+        self.log(f"Starting crawl for {self.target_url} up to depth {self.max_depth}")
         while self.to_visit:
             current_url, current_depth = self.to_visit.pop(0)
 
@@ -31,7 +37,7 @@ class Crawler:
                     continue
 
                 soup = BeautifulSoup(response.text, 'html.parser')
-                print(f"[{current_depth}] Crawled: {current_url}")
+                self.log(f"[{current_depth}] Crawled_OK: {current_url}")
 
                 for tag in soup.find_all('a', href=True):
                     href = tag.get('href')
@@ -45,7 +51,7 @@ class Crawler:
                         if next_url not in self.visited:
                             self.to_visit.append((next_url, current_depth + 1))
             except requests.RequestException as e:
-                print(f"Failed to fetch {current_url}: {e}")
+                self.log(f"Failed to fetch {current_url}: {e}")
 
         return list(self.visited)
 

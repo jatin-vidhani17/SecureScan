@@ -16,3 +16,8 @@ export const getScanResults = async (url) => {
   const response = await axios.get(`${API_BASE}/scan/results`, { params: { url } });
   return response.data;
 };
+
+export const getScanLogs = async (url) => {
+  const response = await axios.get(`${API_BASE}/scan/logs`, { params: { url } });
+  return response.data;
+};

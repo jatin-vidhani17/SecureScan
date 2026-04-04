@@ -1,5 +1,5 @@
-import { useMemo, useState, useEffect } from 'react';
-import { startScan, getScanStatus, getScanResults } from './api';
+import { useMemo, useState, useEffect, useRef } from 'react';
+import { startScan, getScanStatus, getScanResults, getScanLogs } from './api';
 
 const severityClass = {
   High: 'bg-red-100 text-red-700 border-red-200',
@@ -12,6 +12,8 @@ export default function App() {
   const [status, setStatus] = useState('idle'); // idle, running, completed, error
   const [error, setError] = useState('');
   const [result, setResult] = useState(null);
+  const [logs, setLogs] = useState([]);
+  const logsEndRef = useRef(null);
 
   const stats = useMemo(() => {
     if (!result?.summary) {
@@ -26,24 +28,66 @@ export default function App() {
       interval = setInterval(async () => {
         try {
           const res = await getScanStatus(url);
+          
+          try {
+            const logsRes = await getScanLogs(url);
+            if (logsRes.logs) setLogs(logsRes.logs);
+          } catch (e) {
+            // Ignore log fetch errors before scan is fully initialized in db
+          }
+
           if (res.status === 'completed') {
             setStatus('completed');
             const data = await getScanResults(url);
             setResult(data);
+            
+            try {
+              const logsRes = await getScanLogs(url);
+              if (logsRes.logs) setLogs(logsRes.logs);
+            } catch (e) {}
           }
         } catch (err) {
           console.error("Polling error", err);
         }
-      }, 3000); // poll every 3 seconds
+      }, 1500); // Polling every 1.5 seconds for snappier log updates
     }
     return () => clearInterval(interval);
   }, [status, url]);
+
+  useEffect(() => {
+    // Auto-scroll logs
+    if (logsEndRef.current) {
+      logsEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [logs]);
+
+  const downloadLogs = (format) => {
+    if (!logs.length) return;
+    
+    let content, mimeType, filename;
+    if (format === 'json') {
+        content = JSON.stringify(logs, null, 2);
+        mimeType = 'application/json';
+        filename = 'scan_logs.json';
+    } else {
+        content = logs.map(l => `[${l.timestamp}] ${l.message}`).join('\\n');
+        mimeType = 'text/plain';
+        filename = 'scan_logs.txt';
+    }
+    
+    const blob = new Blob([content], { type: mimeType });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setStatus('running');
     setError('');
     setResult(null);
+    setLogs([]);
 
     try {
       await startScan(url);
@@ -144,6 +188,34 @@ export default function App() {
               </div>
             </section>
           </div>
+        )}
+
+        {(status === 'running' || status === 'completed') && (
+          <section className="mt-8 rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+            <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-6 py-4">
+              <h2 className="text-xl font-bold text-slate-800">Scan Logs</h2>
+              <div className="flex gap-2">
+                <button onClick={() => downloadLogs('txt')} className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 transition">
+                  Download TXT
+                </button>
+                <button onClick={() => downloadLogs('json')} className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 transition">
+                  Download JSON
+                </button>
+              </div>
+            </div>
+            <div className="bg-slate-900 p-6 h-64 overflow-y-auto font-mono text-xs text-emerald-400">
+              {logs.length === 0 ? (
+                <div className="text-slate-500 italic">Waiting for scan initialization...</div>
+              ) : (
+                logs.map((log, idx) => (
+                  <div key={idx} className="mb-1 leading-relaxed">
+                    <span className="text-slate-500">[{log.timestamp}]</span> <span className="text-slate-300">$</span> {log.message}
+                  </div>
+                ))
+              )}
+              <div ref={logsEndRef} />
+            </div>
+          </section>
         )}
       </div>
     </main>

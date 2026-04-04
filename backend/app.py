@@ -113,5 +113,28 @@ def scan_results():
         }
     }), 200
 
+@app.get("/api/scan/logs")
+def scan_logs():
+    target_url = request.args.get("url")
+    if not target_url:
+        return jsonify({"error": "URL parameter required"}), 400
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM scans WHERE target_url=? ORDER BY id DESC LIMIT 1", (target_url,))
+    scan_row = cursor.fetchone()
+    
+    if not scan_row:
+        conn.close()
+        return jsonify({"error": "No scan found"}), 404
+        
+    scan_id = scan_row[0]
+    cursor.execute("SELECT message, timestamp FROM logs WHERE scan_id=? ORDER BY id ASC", (scan_id,))
+    rows = cursor.fetchall()
+    conn.close()
+
+    logs = [{"message": r[0], "timestamp": r[1]} for r in rows]
+    return jsonify({"logs": logs}), 200
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=PORT, debug=True)

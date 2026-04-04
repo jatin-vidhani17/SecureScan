@@ -20,6 +20,16 @@ def init_db():
     """)
 
     cursor.execute("""
+        CREATE TABLE IF NOT EXISTS logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            scan_id INTEGER,
+            message TEXT NOT NULL,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(scan_id) REFERENCES scans(id)
+        )
+    """)
+
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS pages (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             scan_id INTEGER,
@@ -87,6 +97,21 @@ def save_vulnerabilities(scan_id: int, vulnerabilities: List[Dict[str, Any]]):
         ))
     conn.commit()
     conn.close()
+
+def save_log(scan_id: int, message: str):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO logs (scan_id, message) VALUES (?, ?)", (scan_id, message))
+    conn.commit()
+    conn.close()
+
+def get_logs(scan_id: int) -> List[Dict[str, Any]]:
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("SELECT message, timestamp FROM logs WHERE scan_id=? ORDER BY id ASC", (scan_id,))
+    rows = cursor.fetchall()
+    conn.close()
+    return [{"message": r[0], "timestamp": r[1]} for r in rows]
 
 # Initialize upon import
 init_db()

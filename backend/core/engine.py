@@ -6,7 +6,7 @@ from detectors.sqli import SQLInjectionDetector
 from detectors.xss import XSSDetector
 from detectors.sensitive_data import SensitiveDataDetector
 
-from database import create_scan, complete_scan, save_pages, save_vulnerabilities
+from database import create_scan, complete_scan, save_pages, save_vulnerabilities, save_log
 
 class ScannerEngine:
     def __init__(self, target_url: str, max_depth: int = 2):
@@ -39,13 +39,22 @@ class ScannerEngine:
         return url_findings
 
     def run(self) -> Dict[str, Any]:
-        print(f"--- Starting Scan for {self.target_url} ---")
         scan_id = create_scan(self.target_url)
 
+        def engine_log(msg):
+            print(msg)
+            save_log(scan_id, msg)
+
+        engine_log(f"--- Starting Scan for {self.target_url} ---")
+        
+        # Attach log callback to crawler
+        self.crawler.log_callback = engine_log
+
         # Step 1: Crawling
+        engine_log("Initializing Crawler...")
         discovered_urls = self.crawler.crawl()
         save_pages(scan_id, discovered_urls)
-        print(f"Discovered {len(discovered_urls)} URLs to scan.")
+        engine_log(f"Discovered {len(discovered_urls)} URLs to scan.")
 
         # Step 2: Running Detectors Concurrently
         all_vulnerabilities = []
@@ -58,13 +67,14 @@ class ScannerEngine:
                     findings = future.result()
                     all_vulnerabilities.extend(findings)
                 except Exception as exc:
-                    print(f'{url} generated an exception: {exc}')
+                    engine_log(f'{url} generated an exception: {exc}')
 
         # Step 3: Save and complete
+        engine_log("Saving scan vulnerabilities...")
         save_vulnerabilities(scan_id, all_vulnerabilities)
         complete_scan(scan_id)
 
-        print(f"--- Scan Completed ---")
+        engine_log(f"--- Scan Completed. Found {len(all_vulnerabilities)} vulnerabilities! ---")
         return {
             "target": self.target_url,
             "scanned_urls_count": len(discovered_urls),
