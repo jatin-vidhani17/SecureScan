@@ -1,45 +1,116 @@
+"""
+Enhanced Report Generator for SecureScan.
+Generates structured reports with OWASP mapping, scoring, and recommendations.
+"""
+
 import json
-import os
 from datetime import datetime
 from typing import List, Dict, Any
 
+
 class ReportGenerator:
-    def __init__(self, target: str, vulnerabilities: List[Dict[str, Any]]):
-        self.target = target
-        self.vulnerabilities = vulnerabilities
+    def __init__(self, scan_data: Dict[str, Any]):
+        """
+        Args:
+            scan_data: Full scan result dict from the engine, containing:
+                target, score, grade, tests_passed, tests_total,
+                owasp_results, vulnerabilities
+        """
+        self.target = scan_data.get("target", "")
+        self.score = scan_data.get("score", 0)
+        self.grade = scan_data.get("grade", "F")
+        self.tests_passed = scan_data.get("tests_passed", 0)
+        self.tests_total = scan_data.get("tests_total", 10)
+        self.owasp_results = scan_data.get("owasp_results", [])
+        self.vulnerabilities = scan_data.get("vulnerabilities", [])
         self.timestamp = datetime.now().isoformat()
 
+    @property
+    def risk_summary(self) -> Dict[str, int]:
+        return {
+            "total": len(self.vulnerabilities),
+            "high": sum(1 for v in self.vulnerabilities if v.get("severity") == "High"),
+            "medium": sum(1 for v in self.vulnerabilities if v.get("severity") == "Medium"),
+            "low": sum(1 for v in self.vulnerabilities if v.get("severity") == "Low"),
+        }
+
+    @property
+    def recommendations(self) -> List[str]:
+        return [
+            r["recommendation"]
+            for r in self.owasp_results
+            if r.get("status") == "fail" and r.get("recommendation")
+        ]
+
     def generate_json(self) -> str:
+        """Generate a full JSON report string."""
         report = {
+            "report_title": "SecureScan Vulnerability Assessment Report",
             "target": self.target,
             "scanned_at": self.timestamp,
+            "score": self.score,
+            "grade": self.grade,
+            "tests_passed": self.tests_passed,
+            "tests_total": self.tests_total,
+            "risk_summary": self.risk_summary,
+            "owasp_results": self.owasp_results,
             "vulnerabilities": self.vulnerabilities,
-            "summary": {
-                "total": len(self.vulnerabilities),
-                "high": sum(1 for v in self.vulnerabilities if v.get("severity") == "High"),
-                "medium": sum(1 for v in self.vulnerabilities if v.get("severity") == "Medium"),
-                "low": sum(1 for v in self.vulnerabilities if v.get("severity") == "Low"),
-            }
+            "recommendations": self.recommendations
         }
         return json.dumps(report, indent=2)
 
     def generate_text(self) -> str:
+        """Generate a human-readable text report."""
         lines = [
-            f"=== SecureScan Report ===",
-            f"Target: {self.target}",
-            f"Date: {self.timestamp}",
-            f"Total Vulnerabilities: {len(self.vulnerabilities)}",
-            "========================="
+            "=" * 60,
+            "  SecureScan — Vulnerability Assessment Report",
+            "=" * 60,
+            f"  Target URL  : {self.target}",
+            f"  Scan Date   : {self.timestamp}",
+            f"  Score        : {self.score}/100 (Grade: {self.grade})",
+            f"  Tests Passed : {self.tests_passed}/{self.tests_total}",
+            "=" * 60,
+            "",
+            "── Risk Summary ──────────────────────────────────────────",
+            f"  Total Issues : {self.risk_summary['total']}",
+            f"  High         : {self.risk_summary['high']}",
+            f"  Medium       : {self.risk_summary['medium']}",
+            f"  Low          : {self.risk_summary['low']}",
+            "",
+            "── OWASP Top 10 Results ──────────────────────────────────",
         ]
-        
-        for idx, vuln in enumerate(self.vulnerabilities, 1):
-            lines.append(f"\n[{idx}] {vuln.get('type')} ({vuln.get('severity')})")
-            lines.append(f"    URL: {vuln.get('url')}")
-            if vuln.get('parameter'):
-                lines.append(f"    Parameter: {vuln.get('parameter')}")
-            if vuln.get('payload'):
-                lines.append(f"    Payload: {vuln.get('payload')}")
-            if vuln.get('details'):
-                lines.append(f"    Details: {vuln.get('details')}")
+
+        for r in self.owasp_results:
+            icon = "✓ PASS" if r["status"] == "pass" else "✗ FAIL"
+            lines.append(f"  [{r['owasp_id']}] {r['owasp_name']}")
+            lines.append(f"         Status     : {icon}")
+            lines.append(f"         Severity   : {r.get('severity', 'N/A')}")
+            lines.append(f"         Description: {r.get('description', '')}")
+            if r["status"] == "fail":
+                lines.append(f"         Fix        : {r.get('recommendation', '')}")
+            lines.append("")
+
+        if self.vulnerabilities:
+            lines.append("── Detailed Findings ─────────────────────────────────────")
+            for idx, vuln in enumerate(self.vulnerabilities, 1):
+                lines.append(f"  [{idx}] {vuln.get('type')} ({vuln.get('severity')})")
+                lines.append(f"       URL       : {vuln.get('url')}")
+                if vuln.get("parameter"):
+                    lines.append(f"       Parameter : {vuln['parameter']}")
+                if vuln.get("payload"):
+                    lines.append(f"       Payload   : {vuln['payload']}")
+                if vuln.get("details"):
+                    lines.append(f"       Details   : {vuln['details']}")
+                lines.append("")
+
+        if self.recommendations:
+            lines.append("── Recommendations ───────────────────────────────────────")
+            for idx, rec in enumerate(self.recommendations, 1):
+                lines.append(f"  {idx}. {rec}")
+            lines.append("")
+
+        lines.append("=" * 60)
+        lines.append("  Report generated by SecureScan v2.0")
+        lines.append("=" * 60)
 
         return "\n".join(lines)

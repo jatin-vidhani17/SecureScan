@@ -1,0 +1,227 @@
+{
+  "report_title": "SecureScan Vulnerability Assessment Report",
+  "target": "http://testphp.vulnweb.com",
+  "scan_date": "2026-04-05T20:00:00",
+  "completed_at": "2026-04-05T20:05:32",
+  "score": 40,
+  "grade": "F",
+  "tests_passed": 4,
+  "tests_total": 10,
+  "pages_crawled": 15,
+  "owasp_results": [
+    {
+      "owasp_id": "A01",
+      "owasp_name": "Broken Access Control",
+      "status": "fail",
+      "severity": "High",
+      "description": "Found 2 access control issue(s): exposed admin paths or directory listings.",
+      "recommendation": "Restrict access to admin paths with authentication. Disable directory listing in server config.",
+      "findings": [
+        {
+          "issue": "Sensitive path accessible: /admin",
+          "url": "http://testphp.vulnweb.com/admin",
+          "evidence": "HTTP 200 returned for /admin"
+        },
+        {
+          "issue": "Directory listing detected",
+          "url": "http://testphp.vulnweb.com/images/",
+          "evidence": "Page contains 'Index of' pattern"
+        }
+      ]
+    },
+    {
+      "owasp_id": "A02",
+      "owasp_name": "Security Misconfiguration",
+      "status": "fail",
+      "severity": "High",
+      "description": "4 missing or misconfigured security header(s) detected.",
+      "recommendation": "Configure your web server to send all recommended security headers (CSP, HSTS, X-Frame-Options, etc.).",
+      "findings": [
+        { "issue": "Missing header: Content-Security-Policy", "severity": "High", "evidence": "Header not found in HTTP response" },
+        { "issue": "Missing header: Strict-Transport-Security", "severity": "Medium", "evidence": "Header not found in HTTP response" },
+        { "issue": "Missing header: X-Content-Type-Options", "severity": "Medium", "evidence": "Header not found in HTTP response" },
+        { "issue": "Missing header: Permissions-Policy", "severity": "Low", "evidence": "Header not found in HTTP response" }
+      ]
+    },
+    {
+      "owasp_id": "A03",
+      "owasp_name": "Software Supply Chain Failures",
+      "status": "pass",
+      "severity": "Low",
+      "description": "No known outdated JavaScript libraries detected in page sources.",
+      "recommendation": "Regularly audit third-party dependencies for known CVEs.",
+      "findings": []
+    },
+    {
+      "owasp_id": "A04",
+      "owasp_name": "Cryptographic Failures",
+      "status": "fail",
+      "severity": "High",
+      "description": "Found 2 cryptographic / data-exposure issue(s).",
+      "recommendation": "Use HTTPS everywhere. Remove sensitive data from HTML responses. Avoid mixed content.",
+      "findings": [
+        {
+          "issue": "Site served over plain HTTP",
+          "url": "http://testphp.vulnweb.com",
+          "evidence": "No TLS/SSL encryption — data transmitted in cleartext"
+        },
+        {
+          "issue": "Sensitive data exposed in response",
+          "url": "http://testphp.vulnweb.com/userinfo.php?id=1",
+          "evidence": "Exposed data: user@example.com"
+        }
+      ]
+    },
+    {
+      "owasp_id": "A05",
+      "owasp_name": "Injection",
+      "status": "fail",
+      "severity": "High",
+      "description": "Found 2 injection vulnerability/ies (SQLi / XSS).",
+      "recommendation": "Use parameterized queries for SQL. Sanitise and encode all user input before rendering in HTML.",
+      "findings": [
+        {
+          "issue": "SQL Injection detected",
+          "url": "http://testphp.vulnweb.com/listproducts.php?cat=1",
+          "parameter": "cat",
+          "payload": "'",
+          "sub_type": "SQL Injection"
+        },
+        {
+          "issue": "Cross-Site Scripting (XSS) detected",
+          "url": "http://testphp.vulnweb.com/search.php?test=query",
+          "parameter": "test",
+          "payload": "<script>alert('XSS_TEST_MARKER')</script>",
+          "sub_type": "XSS"
+        }
+      ]
+    },
+    {
+      "owasp_id": "A06",
+      "owasp_name": "Insecure Design",
+      "status": "fail",
+      "severity": "Medium",
+      "description": "Found 1 page(s) exposing verbose error messages or stack traces.",
+      "recommendation": "Configure custom error pages. Never expose stack traces or debug info in production.",
+      "findings": [
+        {
+          "issue": "Verbose error / stack trace exposed",
+          "url": "http://testphp.vulnweb.com/listproducts.php?cat=1'",
+          "evidence": "Pattern matched: php (warning|notice|fatal)"
+        }
+      ]
+    },
+    {
+      "owasp_id": "A07",
+      "owasp_name": "Authentication Failures",
+      "status": "fail",
+      "severity": "High",
+      "description": "Found 1 authentication-related issue(s).",
+      "recommendation": "Add CSRF tokens to all forms. Ensure login forms submit over HTTPS.",
+      "findings": [
+        {
+          "issue": "Login form without CSRF protection",
+          "url": "http://testphp.vulnweb.com/login.php",
+          "evidence": "Password field found but no CSRF token detected in the form"
+        }
+      ]
+    },
+    {
+      "owasp_id": "A08",
+      "owasp_name": "Software & Data Integrity Failures",
+      "status": "pass",
+      "severity": "Low",
+      "description": "All external scripts include SRI attributes, or no external scripts detected.",
+      "recommendation": "Continue using SRI for all CDN-hosted resources.",
+      "findings": []
+    },
+    {
+      "owasp_id": "A09",
+      "owasp_name": "Security Logging & Alerting Failures",
+      "status": "pass",
+      "severity": "Low",
+      "description": "Logging and alerting configuration appears adequate.",
+      "recommendation": "Ensure logs are monitored and alerts are configured for anomalies.",
+      "findings": []
+    },
+    {
+      "owasp_id": "A10",
+      "owasp_name": "Mishandling of Exceptional Conditions",
+      "status": "pass",
+      "severity": "Low",
+      "description": "Error handling appears properly configured — no debug info leaked.",
+      "recommendation": "Regularly test error handling paths and keep custom error pages updated.",
+      "findings": []
+    }
+  ],
+  "vulnerabilities": [
+    {
+      "type": "Sensitive path accessible: /admin",
+      "url": "http://testphp.vulnweb.com/admin",
+      "parameter": "",
+      "payload": "HTTP 200 returned for /admin",
+      "severity": "High",
+      "description": "HTTP 200 returned for /admin",
+      "owasp_category": "A01"
+    },
+    {
+      "type": "Missing header: Content-Security-Policy",
+      "url": "http://testphp.vulnweb.com",
+      "parameter": "",
+      "payload": "",
+      "severity": "High",
+      "description": "Header not found in HTTP response",
+      "owasp_category": "A02"
+    },
+    {
+      "type": "Site served over plain HTTP",
+      "url": "http://testphp.vulnweb.com",
+      "parameter": "",
+      "payload": "No TLS/SSL encryption — data transmitted in cleartext",
+      "severity": "High",
+      "description": "No TLS/SSL encryption",
+      "owasp_category": "A04"
+    },
+    {
+      "type": "SQL Injection detected",
+      "url": "http://testphp.vulnweb.com/listproducts.php?cat=1",
+      "parameter": "cat",
+      "payload": "'",
+      "severity": "High",
+      "description": "Error-based SQL injection via single quote payload",
+      "owasp_category": "A05"
+    },
+    {
+      "type": "Cross-Site Scripting (XSS) detected",
+      "url": "http://testphp.vulnweb.com/search.php?test=query",
+      "parameter": "test",
+      "payload": "<script>alert('XSS_TEST_MARKER')</script>",
+      "severity": "High",
+      "description": "Reflected XSS — payload echoed without sanitisation",
+      "owasp_category": "A05"
+    },
+    {
+      "type": "Login form without CSRF protection",
+      "url": "http://testphp.vulnweb.com/login.php",
+      "parameter": "",
+      "payload": "Password field found but no CSRF token detected",
+      "severity": "High",
+      "description": "Password field found but no CSRF token detected in the form",
+      "owasp_category": "A07"
+    }
+  ],
+  "risk_summary": {
+    "total": 6,
+    "high": 5,
+    "medium": 1,
+    "low": 0
+  },
+  "recommendations": [
+    "Restrict access to admin paths with authentication. Disable directory listing in server config.",
+    "Configure your web server to send all recommended security headers (CSP, HSTS, X-Frame-Options, etc.).",
+    "Use HTTPS everywhere. Remove sensitive data from HTML responses. Avoid mixed content.",
+    "Use parameterized queries for SQL. Sanitise and encode all user input before rendering in HTML.",
+    "Configure custom error pages. Never expose stack traces or debug info in production.",
+    "Add CSRF tokens to all forms. Ensure login forms submit over HTTPS."
+  ]
+}

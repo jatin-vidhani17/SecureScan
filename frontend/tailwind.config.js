@@ -11,7 +11,10 @@ export default {
       },
       fontFamily: {
         heading: ['Poppins', 'sans-serif'],
-        body: ['Space Grotesk', 'sans-serif'],
+        body: ['Inter', 'Space Grotesk', 'sans-serif'],
+      },
+      animation: {
+        'fadeIn': 'fadeIn 0.6s ease-out both',
       },
     },
   },
