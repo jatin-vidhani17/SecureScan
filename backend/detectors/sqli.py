@@ -7,15 +7,45 @@ class SQLInjectionDetector:
         self.payloads = [
             "'",
             "\"",
+            "''",
+            "`;",
             "' OR '1'='1",
-            "1 OR 1=1"
+            "\" OR \"1\"=\"1",
+            "1 OR 1=1",
+            "' OR 1=1 --",
+            "\" OR 1=1 --",
+            "1 OR 1=1 --",
+            "' UNION SELECT NULL--",
+            "\" UNION SELECT NULL--"
         ]
         self.error_signatures = [
+            # MySQL
+            "you have an error in your sql syntax",
+            "warning: mysql",
             "mysql error",
+            "sql syntax parameters",
+            "mariadb server",
+            # PostgreSQL
+            "valid postgresql command",
+            "postgresql query failed",
+            "pg_query",
+            # SQLite
+            "sqlite3.operationalerror:",
+            "sqlite error",
+            "unrecognized token:",
+            # Oracle
+            "ora-01756",
+            "ora-00933",
+            "quoted string not properly terminated",
+            # Microsoft SQL Server
+            "unclosed quotation mark after the character string",
+            "sqlexception",
+            "sqlserver exception",
+            # Generic
             "syntax error",
             "sql error",
-            "warning mysql",
-            "unclosed quotation mark after the character string"
+            "database error",
+            "internal server error" 
         ]
 
     def scan_url(self, url: str) -> Optional[Dict]:

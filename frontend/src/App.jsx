@@ -213,6 +213,18 @@ export default function App() {
                   </div>
                 ))
               )}
+              {status === 'running' && (
+                <div className="mt-2 flex items-center text-emerald-400 opacity-80">
+                  <span className="mr-2 animate-pulse">Running</span>
+                  <span className="flex space-x-1">
+                    <span className="animate-bounce" style={{ animationDelay: '0ms' }}>.</span>
+                    <span className="animate-bounce" style={{ animationDelay: '150ms' }}>.</span>
+                    <span className="animate-bounce" style={{ animationDelay: '300ms' }}>.</span>
+                  </span>
+                  <span className="ml-3 italic text-neutral-500 text-[10px]"></span>
+                  <span className="ml-2 w-2 h-3 bg-emerald-400 animate-pulse"></span>
+                </div>
+              )}
               <div ref={logsEndRef} />
             </div>
           </section>

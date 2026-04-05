@@ -1,0 +1,1110 @@
+[
+  {
+    "message": "--- Starting Scan for https://public-firing-range.appspot.com/ ---",
+    "timestamp": "2026-04-04 18:18:16"
+  },
+  {
+    "message": "Initializing Crawler...",
+    "timestamp": "2026-04-04 18:18:16"
+  },
+  {
+    "message": "Starting crawl for https://public-firing-range.appspot.com/ up to depth 2",
+    "timestamp": "2026-04-04 18:18:17"
+  },
+  {
+    "message": "[0] Crawled_OK: https://public-firing-range.appspot.com/",
+    "timestamp": "2026-04-04 18:18:18"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/address/index.html",
+    "timestamp": "2026-04-04 18:18:20"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/angular/index.html",
+    "timestamp": "2026-04-04 18:18:22"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/badscriptimport/index.html",
+    "timestamp": "2026-04-04 18:18:24"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/clickjacking/index.html",
+    "timestamp": "2026-04-04 18:18:25"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/cors/index.html",
+    "timestamp": "2026-04-04 18:18:27"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/dom/index.html",
+    "timestamp": "2026-04-04 18:18:29"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/escape/index.html",
+    "timestamp": "2026-04-04 18:18:31"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/flashinjection/index.html",
+    "timestamp": "2026-04-04 18:18:32"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/leakedcookie/index.html",
+    "timestamp": "2026-04-04 18:18:34"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/mixedcontent/index.html",
+    "timestamp": "2026-04-04 18:18:36"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/redirect/index.html",
+    "timestamp": "2026-04-04 18:18:38"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/reflected/index.html",
+    "timestamp": "2026-04-04 18:18:39"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/remoteinclude/index.html",
+    "timestamp": "2026-04-04 18:18:41"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/reverseclickjacking/",
+    "timestamp": "2026-04-04 18:18:43"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/stricttransportsecurity/index.html",
+    "timestamp": "2026-04-04 18:18:45"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/tags/index.html",
+    "timestamp": "2026-04-04 18:18:47"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/urldom/index.html",
+    "timestamp": "2026-04-04 18:18:48"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/vulnerablelibraries/index.html",
+    "timestamp": "2026-04-04 18:18:50"
+  },
+  {
+    "message": "[1] Crawled_OK: https://public-firing-range.appspot.com/insecurethirdpartyscripts/index.html",
+    "timestamp": "2026-04-04 18:18:52"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location.hash/assign",
+    "timestamp": "2026-04-04 18:18:54"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location.hash/documentwrite",
+    "timestamp": "2026-04-04 18:18:56"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location.hash/documentwriteln",
+    "timestamp": "2026-04-04 18:18:58"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location.hash/eval",
+    "timestamp": "2026-04-04 18:18:59"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location.hash/innerHtml",
+    "timestamp": "2026-04-04 18:19:01"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location.hash/rangeCreateContextualFragment",
+    "timestamp": "2026-04-04 18:19:03"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location.hash/replace",
+    "timestamp": "2026-04-04 18:19:05"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location.hash/setTimeout",
+    "timestamp": "2026-04-04 18:19:07"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location.hash/function",
+    "timestamp": "2026-04-04 18:19:08"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location.hash/onclickSetAttribute",
+    "timestamp": "2026-04-04 18:19:10"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location.hash/onclickAddEventListener",
+    "timestamp": "2026-04-04 18:19:12"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location.hash/jshref",
+    "timestamp": "2026-04-04 18:19:14"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location.hash/inlineevent",
+    "timestamp": "2026-04-04 18:19:15"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location.hash/formaction",
+    "timestamp": "2026-04-04 18:19:17"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location/assign",
+    "timestamp": "2026-04-04 18:19:19"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location/documentwrite",
+    "timestamp": "2026-04-04 18:19:21"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location/documentwriteln",
+    "timestamp": "2026-04-04 18:19:22"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location/eval",
+    "timestamp": "2026-04-04 18:19:24"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location/innerHtml",
+    "timestamp": "2026-04-04 18:19:26"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location/rangeCreateContextualFragment",
+    "timestamp": "2026-04-04 18:19:28"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location/replace",
+    "timestamp": "2026-04-04 18:19:30"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/location/setTimeout",
+    "timestamp": "2026-04-04 18:19:31"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/documentURI/documentwrite",
+    "timestamp": "2026-04-04 18:19:33"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/baseURI/documentwrite",
+    "timestamp": "2026-04-04 18:19:35"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/locationhref/documentwrite",
+    "timestamp": "2026-04-04 18:19:37"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/locationpathname/documentwrite",
+    "timestamp": "2026-04-04 18:19:38"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/locationsearch/documentwrite",
+    "timestamp": "2026-04-04 18:19:40"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/URL/documentwrite",
+    "timestamp": "2026-04-04 18:19:42"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/address/URLUnencoded/documentwrite",
+    "timestamp": "2026-04-04 18:19:44"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body/1.1.5?q=test",
+    "timestamp": "2026-04-04 18:19:46"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body/1.2.0?q=test",
+    "timestamp": "2026-04-04 18:19:48"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body/1.2.18?q=test",
+    "timestamp": "2026-04-04 18:19:50"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body/1.2.19?q=test",
+    "timestamp": "2026-04-04 18:19:51"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body/1.2.24?q=test",
+    "timestamp": "2026-04-04 18:19:53"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body/1.6.0?q=test",
+    "timestamp": "2026-04-04 18:19:55"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body/1.4.0?q=test",
+    "timestamp": "2026-04-04 18:19:57"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body_alt_symbols/1.4.0?q=test",
+    "timestamp": "2026-04-04 18:19:58"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body_alt_symbols_raw/1.6.0?q=test",
+    "timestamp": "2026-04-04 18:20:00"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body_raw/1.4.0?q=test",
+    "timestamp": "2026-04-04 18:20:02"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body_raw_post/1.6.0",
+    "timestamp": "2026-04-04 18:20:04"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body_raw_escaped/1.4.0?q=test",
+    "timestamp": "2026-04-04 18:20:06"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body_raw_escaped_alt_symbols/1.4.0?q=test",
+    "timestamp": "2026-04-04 18:20:08"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body_attribute_ng/1.4.0?q=test",
+    "timestamp": "2026-04-04 18:20:10"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body_attribute_non_ng/1.4.0?q=test",
+    "timestamp": "2026-04-04 18:20:12"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_body_attribute_non_ng_raw/1.4.0?q=test",
+    "timestamp": "2026-04-04 18:20:14"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_form_parse/1.6.0",
+    "timestamp": "2026-04-04 18:20:15"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_cookie_parse/1.6.0",
+    "timestamp": "2026-04-04 18:20:17"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_storage_parse/1.6.0",
+    "timestamp": "2026-04-04 18:20:19"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/angular/angular_post_message_parse/1.6.0",
+    "timestamp": "2026-04-04 18:20:21"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/remoteinclude/parameter/script?q=http://127.0.0.2/localhost_import.js",
+    "timestamp": "2026-04-04 18:20:22"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/remoteinclude/parameter/script?q=http://192.168.1.2/private_network_import.js",
+    "timestamp": "2026-04-04 18:20:24"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/remoteinclude/parameter/script?q=http://g00gle.com/typosquatting_domain.js",
+    "timestamp": "2026-04-04 18:20:26"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/clickjacking/clickjacking_xfo_allowall",
+    "timestamp": "2026-04-04 18:20:28"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/clickjacking/clickjacking_csp_no_frame_ancestors",
+    "timestamp": "2026-04-04 18:20:29"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/cors/alloworigin/dynamicAllowOrigin",
+    "timestamp": "2026-04-04 18:20:31"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/cors/alloworigin/allowOriginStartsWith",
+    "timestamp": "2026-04-04 18:20:33"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/cors/alloworigin/allowOriginEndsWith",
+    "timestamp": "2026-04-04 18:20:34"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/cors/alloworigin/allowOriginRegexDot",
+    "timestamp": "2026-04-04 18:20:36"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/cors/alloworigin/allowOriginProtocolDowngrade",
+    "timestamp": "2026-04-04 18:20:38"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/cors/alloworigin/allowNullOrigin",
+    "timestamp": "2026-04-04 18:20:40"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/cors/alloworigin/allowInsecureScheme",
+    "timestamp": "2026-04-04 18:20:42"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/document/cookie_set/eval",
+    "timestamp": "2026-04-04 18:20:44"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/document/cookie_set/innerHtml",
+    "timestamp": "2026-04-04 18:20:46"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/document/cookie_set/documentWrite",
+    "timestamp": "2026-04-04 18:20:47"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/document/cookie/eval",
+    "timestamp": "2026-04-04 18:20:49"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/document/referrer/eval",
+    "timestamp": "2026-04-04 18:20:51"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/document/referrer/innerHtml",
+    "timestamp": "2026-04-04 18:20:53"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/document/referrer/documentWrite",
+    "timestamp": "2026-04-04 18:20:54"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/window/name/eval",
+    "timestamp": "2026-04-04 18:20:56"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/window/name/innerHtml",
+    "timestamp": "2026-04-04 18:20:58"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/window/name/documentWrite",
+    "timestamp": "2026-04-04 18:21:00"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/localStorage/array/eval",
+    "timestamp": "2026-04-04 18:21:01"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/localStorage/function/eval",
+    "timestamp": "2026-04-04 18:21:04"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/localStorage/function/innerHtml",
+    "timestamp": "2026-04-04 18:21:05"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/localStorage/function/documentWrite",
+    "timestamp": "2026-04-04 18:21:08"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/localStorage/property/documentWrite",
+    "timestamp": "2026-04-04 18:21:10"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/external/localStorage/array/eval",
+    "timestamp": "2026-04-04 18:21:11"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/external/localStorage/function/eval",
+    "timestamp": "2026-04-04 18:21:13"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/external/localStorage/function/innerHtml",
+    "timestamp": "2026-04-04 18:21:15"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/external/localStorage/function/documentWrite",
+    "timestamp": "2026-04-04 18:21:16"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/external/localStorage/property/documentWrite",
+    "timestamp": "2026-04-04 18:21:18"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/sessionStorage/array/eval",
+    "timestamp": "2026-04-04 18:21:20"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/sessionStorage/function/eval",
+    "timestamp": "2026-04-04 18:21:22"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/sessionStorage/function/innerHtml",
+    "timestamp": "2026-04-04 18:21:24"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/sessionStorage/function/documentWrite",
+    "timestamp": "2026-04-04 18:21:25"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/sessionStorage/property/documentWrite",
+    "timestamp": "2026-04-04 18:21:27"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/external/sessionStorage/array/eval",
+    "timestamp": "2026-04-04 18:21:29"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/external/sessionStorage/function/eval",
+    "timestamp": "2026-04-04 18:21:31"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/external/sessionStorage/function/innerHtml",
+    "timestamp": "2026-04-04 18:21:33"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/external/sessionStorage/function/documentWrite",
+    "timestamp": "2026-04-04 18:21:34"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/external/sessionStorage/property/documentWrite",
+    "timestamp": "2026-04-04 18:21:36"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/postMessage/eval",
+    "timestamp": "2026-04-04 18:21:38"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/postMessage/innerHtml",
+    "timestamp": "2026-04-04 18:21:40"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/postMessage/documentWrite",
+    "timestamp": "2026-04-04 18:21:42"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/postMessage/complexMessageDocumentWriteEval",
+    "timestamp": "2026-04-04 18:21:44"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/postMessage/improperOriginValidationWithPartialStringComparison",
+    "timestamp": "2026-04-04 18:21:45"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/toxicdom/postMessage/improperOriginValidationWithRegExp",
+    "timestamp": "2026-04-04 18:21:47"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/eventtriggering/document/formSubmission/eval",
+    "timestamp": "2026-04-04 18:21:49"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/eventtriggering/document/formSubmission/innerHtml",
+    "timestamp": "2026-04-04 18:21:51"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/eventtriggering/document/formSubmission/documentWrite",
+    "timestamp": "2026-04-04 18:21:53"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/eventtriggering/document/inputTyping/eval",
+    "timestamp": "2026-04-04 18:21:55"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/eventtriggering/document/inputTyping/innerHtml",
+    "timestamp": "2026-04-04 18:21:56"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/eventtriggering/document/inputTyping/documentWrite",
+    "timestamp": "2026-04-04 18:21:58"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/javascripturi.html",
+    "timestamp": "2026-04-04 18:22:00"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/dom/dompropagation/",
+    "timestamp": "2026-04-04 18:22:02"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/body?q=a",
+    "timestamp": "2026-04-04 18:22:03"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/body?q=a",
+    "timestamp": "2026-04-04 18:22:05"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/head?q=a",
+    "timestamp": "2026-04-04 18:22:07"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/head?q=a",
+    "timestamp": "2026-04-04 18:22:09"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/body_comment?q=a",
+    "timestamp": "2026-04-04 18:22:11"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/body_comment?q=a",
+    "timestamp": "2026-04-04 18:22:13"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/textarea?q=a",
+    "timestamp": "2026-04-04 18:22:14"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/textarea?q=a",
+    "timestamp": "2026-04-04 18:22:16"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/tagname?q=a",
+    "timestamp": "2026-04-04 18:22:18"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/tagname?q=a",
+    "timestamp": "2026-04-04 18:22:20"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/attribute_unquoted?q=a",
+    "timestamp": "2026-04-04 18:22:23"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/attribute_unquoted?q=a",
+    "timestamp": "2026-04-04 18:22:26"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/attribute_singlequoted?q=a",
+    "timestamp": "2026-04-04 18:22:28"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/attribute_singlequoted?q=a",
+    "timestamp": "2026-04-04 18:22:30"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/attribute_quoted?q=a",
+    "timestamp": "2026-04-04 18:22:32"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/attribute_quoted?q=a",
+    "timestamp": "2026-04-04 18:22:34"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/attribute_name?q=a",
+    "timestamp": "2026-04-04 18:22:36"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/attribute_name?q=a",
+    "timestamp": "2026-04-04 18:22:38"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/css_style?q=a",
+    "timestamp": "2026-04-04 18:22:40"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/css_style?q=a",
+    "timestamp": "2026-04-04 18:22:42"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/css_style_value?q=a&escape=HTML_ESCAPE",
+    "timestamp": "2026-04-04 18:22:44"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/css_style_value?q=a",
+    "timestamp": "2026-04-04 18:22:46"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/css_style_font_value?q=a",
+    "timestamp": "2026-04-04 18:22:48"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/css_style_font_value?q=a",
+    "timestamp": "2026-04-04 18:22:50"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/js_assignment?q=a",
+    "timestamp": "2026-04-04 18:22:52"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/js_assignment?q=a",
+    "timestamp": "2026-04-04 18:22:54"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/js_eval?q=a",
+    "timestamp": "2026-04-04 18:22:55"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/js_eval?q=a",
+    "timestamp": "2026-04-04 18:22:57"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/js_quoted_string?q=a",
+    "timestamp": "2026-04-04 18:22:59"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/js_quoted_string?q=a",
+    "timestamp": "2026-04-04 18:23:01"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/js_singlequoted_string?q=a",
+    "timestamp": "2026-04-04 18:23:03"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/js_singlequoted_string?q=a",
+    "timestamp": "2026-04-04 18:23:04"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/js_slashquoted_string?q=a",
+    "timestamp": "2026-04-04 18:23:06"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/js_slashquoted_string?q=a",
+    "timestamp": "2026-04-04 18:23:08"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/js_comment?q=a",
+    "timestamp": "2026-04-04 18:23:10"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/js_comment?q=a",
+    "timestamp": "2026-04-04 18:23:11"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/attribute_script?q=a",
+    "timestamp": "2026-04-04 18:23:13"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/attribute_script?q=a",
+    "timestamp": "2026-04-04 18:23:16"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/escapeHtml/css_import?q=a",
+    "timestamp": "2026-04-04 18:23:22"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/serverside/encodeUrl/css_import?q=a",
+    "timestamp": "2026-04-04 18:23:23"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/js/escape?q=a",
+    "timestamp": "2026-04-04 18:23:25"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/js/encodeURIComponent?q=a",
+    "timestamp": "2026-04-04 18:23:27"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/escape/js/html_escape?q=a",
+    "timestamp": "2026-04-04 18:23:28"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/leakedcookie/leakedcookie",
+    "timestamp": "2026-04-04 18:23:30"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/leakedcookie/leakedinresource",
+    "timestamp": "2026-04-04 18:23:32"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/redirect/parameter?url=/",
+    "timestamp": "2026-04-04 18:23:35"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/redirect/parameter/NOSTARTSWITHJS?url=/",
+    "timestamp": "2026-04-04 18:23:38"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/redirect/meta?q=/",
+    "timestamp": "2026-04-04 18:23:40"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/body?q=a",
+    "timestamp": "2026-04-04 18:23:42"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/head?q=a",
+    "timestamp": "2026-04-04 18:23:44"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/title?q=a",
+    "timestamp": "2026-04-04 18:23:46"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/body_comment?q=a",
+    "timestamp": "2026-04-04 18:23:47"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/tagname?q=a",
+    "timestamp": "2026-04-04 18:23:49"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/attribute_unquoted?q=a",
+    "timestamp": "2026-04-04 18:23:51"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/attribute_singlequoted?q=a",
+    "timestamp": "2026-04-04 18:23:53"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/attribute_quoted?q=a",
+    "timestamp": "2026-04-04 18:23:55"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/attribute_name?q=a",
+    "timestamp": "2026-04-04 18:23:57"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/body/400?q=a",
+    "timestamp": "2026-04-04 18:23:58"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/body/401?q=a",
+    "timestamp": "2026-04-04 18:24:00"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/body/403?q=a",
+    "timestamp": "2026-04-04 18:24:02"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/body/404?q=a",
+    "timestamp": "2026-04-04 18:24:04"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/body/500?q=a",
+    "timestamp": "2026-04-04 18:24:05"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/iframe_attribute_value?q=a",
+    "timestamp": "2026-04-04 18:24:07"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/iframe_srcdoc?q=a",
+    "timestamp": "2026-04-04 18:24:09"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/textarea?q=a",
+    "timestamp": "2026-04-04 18:24:11"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/textarea_attribute_value?q=a",
+    "timestamp": "2026-04-04 18:24:13"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/noscript?q=a",
+    "timestamp": "2026-04-04 18:24:15"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/style_attribute_value?q=a",
+    "timestamp": "2026-04-04 18:24:17"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/css_style?q=a",
+    "timestamp": "2026-04-04 18:24:18"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/css_style_value?q=a",
+    "timestamp": "2026-04-04 18:24:20"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/css_style_font_value?q=a",
+    "timestamp": "2026-04-04 18:24:22"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/escapedparameter/js_eventhandler_unquoted/UNQUOTED_ATTRIBUTE?q=a",
+    "timestamp": "2026-04-04 18:24:24"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/escapedparameter/js_eventhandler_quoted/DOUBLE_QUOTED_ATTRIBUTE?q=a",
+    "timestamp": "2026-04-04 18:24:26"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/escapedparameter/js_eventhandler_singlequoted/SINGLE_QUOTED_ATTRIBUTE?q=a",
+    "timestamp": "2026-04-04 18:24:27"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/js_assignment?q=a",
+    "timestamp": "2026-04-04 18:24:29"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/js_eval?q=a",
+    "timestamp": "2026-04-04 18:24:31"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/js_quoted_string?q=a",
+    "timestamp": "2026-04-04 18:24:33"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/js_singlequoted_string?q=a",
+    "timestamp": "2026-04-04 18:24:34"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/js_slashquoted_string?q=a",
+    "timestamp": "2026-04-04 18:24:36"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/js_comment?q=a",
+    "timestamp": "2026-04-04 18:24:38"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/attribute_script?q=a",
+    "timestamp": "2026-04-04 18:24:40"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/url/href?q=a",
+    "timestamp": "2026-04-04 18:24:41"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/url/css_import?q=a",
+    "timestamp": "2026-04-04 18:24:43"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/url/script_src?q=a",
+    "timestamp": "2026-04-04 18:24:45"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/url/object_data?q=a",
+    "timestamp": "2026-04-04 18:24:47"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/url/object_param?q=a",
+    "timestamp": "2026-04-04 18:24:49"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/json?q=a",
+    "timestamp": "2026-04-04 18:24:50"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/parameter/form",
+    "timestamp": "2026-04-04 18:24:57"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/filteredcharsets/body/SpaceDoubleQuoteSlashEquals?q=a",
+    "timestamp": "2026-04-04 18:24:59"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/filteredcharsets/attribute_unquoted/DoubleQuoteSinglequote?q=a",
+    "timestamp": "2026-04-04 18:25:01"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/filteredstrings/body/caseSensitive/script?q=a",
+    "timestamp": "2026-04-04 18:25:03"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/filteredstrings/body/caseSensitive/SCRIPT?q=a",
+    "timestamp": "2026-04-04 18:25:05"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reflected/filteredstrings/body/caseInsensitive/script?q=a",
+    "timestamp": "2026-04-04 18:25:07"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/remoteinclude/parameter/script?q=https://google.com",
+    "timestamp": "2026-04-04 18:25:08"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/remoteinclude/script_hash.html",
+    "timestamp": "2026-04-04 18:25:10"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/remoteinclude/parameter/object_raw?q=https://google.com",
+    "timestamp": "2026-04-04 18:25:12"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/remoteinclude/parameter/object/application_x-shockwave-flash?q=https://google.com",
+    "timestamp": "2026-04-04 18:25:14"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/remoteinclude/object_hash.html",
+    "timestamp": "2026-04-04 18:25:15"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reverseclickjacking/singlepage/ParameterInQuery/InCallback/?q=urc_button.click",
+    "timestamp": "2026-04-04 18:25:17"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reverseclickjacking/singlepage/ParameterInQuery/OtherParameter/?q=%26callback%3Durc_button.click%23",
+    "timestamp": "2026-04-04 18:25:19"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reverseclickjacking/singlepage/ParameterInFragment/InCallback/",
+    "timestamp": "2026-04-04 18:25:21"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reverseclickjacking/singlepage/ParameterInFragment/OtherParameter/",
+    "timestamp": "2026-04-04 18:25:22"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reverseclickjacking/multipage/ParameterInQuery/InCallback/WithoutXFO/?q=foo",
+    "timestamp": "2026-04-04 18:25:24"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reverseclickjacking/multipage/ParameterInQuery/OtherParameter/WithoutXFO/?q=%26callback%3Dfoo%23",
+    "timestamp": "2026-04-04 18:25:26"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reverseclickjacking/multipage/ParameterInFragment/InCallback/WithoutXFO/",
+    "timestamp": "2026-04-04 18:25:28"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reverseclickjacking/multipage/ParameterInFragment/OtherParameter/WithoutXFO/",
+    "timestamp": "2026-04-04 18:25:30"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reverseclickjacking/multipage/ParameterInQuery/InCallback/WithXFO/?q=foo",
+    "timestamp": "2026-04-04 18:25:31"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reverseclickjacking/multipage/ParameterInQuery/OtherParameter/WithXFO/?q=%26callback%3Dfoo%23",
+    "timestamp": "2026-04-04 18:25:33"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reverseclickjacking/multipage/ParameterInFragment/InCallback/WithXFO/",
+    "timestamp": "2026-04-04 18:25:35"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/reverseclickjacking/multipage/ParameterInFragment/OtherParameter/WithXFO/",
+    "timestamp": "2026-04-04 18:25:37"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/stricttransportsecurity/hsts_missing",
+    "timestamp": "2026-04-04 18:25:38"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/stricttransportsecurity/hsts_max_age_too_low",
+    "timestamp": "2026-04-04 18:25:40"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/stricttransportsecurity/hsts_max_age_missing",
+    "timestamp": "2026-04-04 18:25:42"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/stricttransportsecurity/hsts_includesubdomains_missing",
+    "timestamp": "2026-04-04 18:25:44"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/stricttransportsecurity/hsts_preload_missing",
+    "timestamp": "2026-04-04 18:25:46"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/tags/multiline?q=a",
+    "timestamp": "2026-04-04 18:26:09"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/redirect?url=http://example.com",
+    "timestamp": "2026-04-04 18:26:13"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/a.href",
+    "timestamp": "2026-04-04 18:26:15"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/document.location",
+    "timestamp": "2026-04-04 18:26:17"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/form.action",
+    "timestamp": "2026-04-04 18:26:19"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/iframe.src",
+    "timestamp": "2026-04-04 18:26:21"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/input.formaction",
+    "timestamp": "2026-04-04 18:26:23"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/window.open",
+    "timestamp": "2026-04-04 18:26:24"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/search/area.href?//example.org",
+    "timestamp": "2026-04-04 18:26:26"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/search/svg.a?//example.org",
+    "timestamp": "2026-04-04 18:26:28"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/search/button.formaction?//example.org",
+    "timestamp": "2026-04-04 18:26:30"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/search/location.assign?//example.org",
+    "timestamp": "2026-04-04 18:26:31"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/search/frame.src?//example.org",
+    "timestamp": "2026-04-04 18:26:33"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/base.href",
+    "timestamp": "2026-04-04 18:26:35"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/embed.src",
+    "timestamp": "2026-04-04 18:26:37"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/fetch",
+    "timestamp": "2026-04-04 18:26:38"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/link.href",
+    "timestamp": "2026-04-04 18:26:40"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/object.data",
+    "timestamp": "2026-04-04 18:26:42"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/param.code.value",
+    "timestamp": "2026-04-04 18:26:44"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/param.movie.value",
+    "timestamp": "2026-04-04 18:26:46"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/param.src.value",
+    "timestamp": "2026-04-04 18:26:47"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/param.url.value",
+    "timestamp": "2026-04-04 18:26:49"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/script.href",
+    "timestamp": "2026-04-04 18:26:51"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/script.src",
+    "timestamp": "2026-04-04 18:26:53"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/xhr.open",
+    "timestamp": "2026-04-04 18:26:54"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/script.src.partial_domain",
+    "timestamp": "2026-04-04 18:26:56"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/script.src.partial_path",
+    "timestamp": "2026-04-04 18:26:58"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/urldom/location/hash/script.src.partial_query",
+    "timestamp": "2026-04-04 18:27:00"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/vulnerablelibraries/jquery.html",
+    "timestamp": "2026-04-04 18:27:02"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/insecurethirdpartyscripts/third_party_scripts_without_subresource_integrity.html",
+    "timestamp": "2026-04-04 18:27:03"
+  },
+  {
+    "message": "[2] Crawled_OK: https://public-firing-range.appspot.com/insecurethirdpartyscripts/third_party_scripts_without_subresource_integrity_dynamically_added.html",
+    "timestamp": "2026-04-04 18:27:06"
+  },
+  {
+    "message": "Discovered 289 URLs to scan.",
+    "timestamp": "2026-04-04 18:27:06"
+  },
+  {
+    "message": "Saving scan vulnerabilities...",
+    "timestamp": "2026-04-04 18:28:56"
+  },
+  {
+    "message": "--- Scan Completed. Found 44 vulnerabilities! ---",
+    "timestamp": "2026-04-04 18:28:56"
+  }
+]

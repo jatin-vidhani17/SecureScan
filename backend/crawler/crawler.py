@@ -1,5 +1,6 @@
 import urllib.parse
 import requests
+import time
 from bs4 import BeautifulSoup
 from typing import Set, List
 
@@ -32,6 +33,8 @@ class Crawler:
             self.visited.add(current_url)
 
             try:
+                # Simulate a really slow server response (artificial delay)
+                time.sleep(1.2)
                 response = requests.get(current_url, timeout=15, headers={'User-Agent': 'Mozilla/5.0'})
                 if 'text/html' not in response.headers.get('Content-Type', ''):
                     continue
