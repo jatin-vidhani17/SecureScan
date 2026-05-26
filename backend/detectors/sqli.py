@@ -1,9 +1,12 @@
 import requests
 import urllib.parse
 from typing import Optional, Dict
+from .base import BaseDetector
 
-class SQLInjectionDetector:
+
+class SQLInjectionDetector(BaseDetector):
     def __init__(self):
+        super().__init__(name="SQL Injection Detector", owasp_category="A03")
         self.payloads = [
             "'",
             "\"",
@@ -75,13 +78,15 @@ class SQLInjectionDetector:
                     # Check for SQL errors in the response body
                     for signature in self.error_signatures:
                         if signature in body:
-                            return {
-                                "type": "SQL Injection",
-                                "url": url,
-                                "parameter": param_name,
-                                "payload": payload,
-                                "severity": "High"
-                            }
+                            return self._make_finding(
+                                vuln_type="SQL Injection",
+                                severity="High",
+                                description="Application appears to be vulnerable to SQL injection",
+                                evidence=f"Database error detected: {signature}",
+                                payload=payload,
+                                parameter=param_name,
+                                url=url
+                            )
                 except requests.RequestException:
                     pass
 

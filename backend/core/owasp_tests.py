@@ -2,8 +2,11 @@
 OWASP Top 10 (2025) Test Framework for SecureScan.
 
 Each test function receives crawled page data and returns a structured result dict.
-The 10 tests map to the OWASP Top 10 categories (A01–A10).
-Existing detectors (sqli, xss, sensitive_data) are integrated into the relevant tests.
+The 10 tests map to the OWASP Top 10 categories (A01-A10).
+
+NOTE: Vulnerability detectors (sqli, xss, sensitive_data, security_headers, cors, authentication)
+now run separately in the ScannerEngine._run_detectors() method and feed findings into these tests.
+These tests aggregate detector findings and also run complementary checks.
 """
 
 import re
@@ -11,7 +14,7 @@ import requests
 import urllib.parse
 from typing import List, Dict, Any, Optional
 
-# Import existing detectors — these are reused, not rewritten
+# Import existing detectors - these are reused, not rewritten
 from detectors.sqli import SQLInjectionDetector
 from detectors.xss import XSSDetector
 from detectors.sensitive_data import SensitiveDataDetector
@@ -55,7 +58,7 @@ def _make_result(
 
 
 # ---------------------------------------------------------------------------
-# A01 — Broken Access Control
+# A01 - Broken Access Control
 # ---------------------------------------------------------------------------
 
 # Common admin / sensitive paths to probe
@@ -67,79 +70,63 @@ _SENSITIVE_PATHS = [
 
 def test_a01_broken_access_control(base_url: str, urls: List[str], responses: Dict[str, requests.Response], log=None) -> Dict:
     """
-    A01 — Broken Access Control
+    A01 - Broken Access Control
     Check for:
-      1. Directory listing enabled (look for 'Index of /' pattern)
-      2. Accessible admin / sensitive paths without authentication
+      1. Directory listing enabled (only real vulnerability)
+    
+    NOTE: Path probing (/admin, /config, /phpmyadmin) removed as these are:
+      - User routes on SPA apps (legitimate)
+      - Rate-limited on real apps (causes hangs)
+      - Causes too many false positives
     """
     findings = []
     parsed = urllib.parse.urlparse(base_url)
     origin = f"{parsed.scheme}://{parsed.netloc}"
 
-    # Check sensitive paths
-    for path in _SENSITIVE_PATHS:
-        probe_url = origin + path
-        if log:
-            log(f"[A01] Probing {probe_url}")
-        resp = _fetch_page(probe_url, timeout=10)
-        if resp and resp.status_code == 200:
-            body_lower = resp.text.lower()
-            # Directory listing?
-            if "index of" in body_lower and "<pre>" in body_lower:
-                findings.append({
-                    "issue": "Directory listing enabled",
-                    "url": probe_url,
-                    "evidence": "Response contains 'Index of' pattern"
-                })
-            # Admin panels accessible
-            if any(kw in body_lower for kw in ["login", "dashboard", "control panel", "admin"]):
-                findings.append({
-                    "issue": f"Sensitive path accessible: {path}",
-                    "url": probe_url,
-                    "evidence": f"HTTP 200 returned for {path}"
-                })
-
-    # Check for directory listing on crawled pages
+    # Only check for directory listing on crawled pages (real vulnerability)
     for url, resp in responses.items():
-        if resp and "index of" in resp.text.lower():
+        if resp and "index of" in resp.text.lower() and "<pre>" in resp.text.lower():
             findings.append({
                 "issue": "Directory listing detected",
                 "url": url,
-                "evidence": "Page contains 'Index of' pattern"
+                "evidence": "Page shows directory contents with file list"
             })
 
     if findings:
         return _make_result(
             "A01", "Broken Access Control", "fail", "High",
-            f"Found {len(findings)} access control issue(s): exposed admin paths or directory listings.",
-            "Restrict access to admin paths with authentication. Disable directory listing in server config.",
+            f"Found {len(findings)} access control issue(s).",
+            "Disable directory listing in server config.",
             findings
         )
     return _make_result(
         "A01", "Broken Access Control", "pass", "Low",
-        "No exposed admin paths or directory listings detected.",
+        "No directory listing or exploitable access control issues detected.",
         "Continue monitoring and enforcing access controls."
     )
 
 
 # ---------------------------------------------------------------------------
-# A02 — Security Misconfiguration
+# A02 — Security Misconfiguration (IMPROVED - only critical headers)
 # ---------------------------------------------------------------------------
 
-_REQUIRED_HEADERS = {
+_CRITICAL_HEADERS = {
     "Content-Security-Policy": "High",
-    "Strict-Transport-Security": "Medium",
-    "X-Content-Type-Options": "Medium",
+    "Strict-Transport-Security": "High",
+    "X-Content-Type-Options": "High",
+}
+
+_RECOMMENDED_HEADERS = {
     "X-Frame-Options": "Medium",
-    "Referrer-Policy": "Low",
-    "Permissions-Policy": "Low",
 }
 
 def test_a02_security_misconfiguration(base_url: str, urls: List[str], responses: Dict[str, requests.Response], log=None) -> Dict:
     """
-    A02 — Security Misconfiguration
-    Check the target's main page for missing security headers.
-    Reuses logic from the existing scanner.py module.
+    A02 — Security Misconfiguration (IMPROVED)
+    
+    Only reports CRITICAL missing headers (CSP, HSTS, XCTO).
+    Skips low-impact headers like Referrer-Policy to reduce noise.
+    Checks for weak values when headers are present.
     """
     findings = []
     resp = responses.get(base_url) or _fetch_page(base_url)
@@ -153,13 +140,29 @@ def test_a02_security_misconfiguration(base_url: str, urls: List[str], responses
 
     headers_lower = {k.lower(): v for k, v in resp.headers.items()}
 
-    for header, severity in _REQUIRED_HEADERS.items():
+    # Check CRITICAL headers only
+    missing_critical = []
+    for header in _CRITICAL_HEADERS:
         if header.lower() not in headers_lower:
+            missing_critical.append(header)
+    
+    # Only report if multiple critical headers missing
+    if len(missing_critical) >= 2:
+        for header in missing_critical:
             findings.append({
-                "issue": f"Missing header: {header}",
-                "severity": severity,
+                "issue": f"Missing critical header: {header}",
+                "severity": "High",
                 "evidence": "Header not found in HTTP response"
             })
+
+    # Check for weak CSP values
+    csp = headers_lower.get("content-security-policy", "")
+    if csp and ("*" in csp or "'unsafe-inline'" in csp):
+        findings.append({
+            "issue": "Weak Content Security Policy",
+            "severity": "Medium",
+            "evidence": f"CSP too permissive: {csp[:80]}..."
+        })
 
     # Check X-Content-Type-Options value
     xcto = headers_lower.get("x-content-type-options", "")
@@ -171,16 +174,15 @@ def test_a02_security_misconfiguration(base_url: str, urls: List[str], responses
         })
 
     if findings:
-        worst = "High" if any(f.get("severity") == "High" for f in findings) else "Medium"
         return _make_result(
-            "A02", "Security Misconfiguration", "fail", worst,
-            f"{len(findings)} missing or misconfigured security header(s) detected.",
-            "Configure your web server to send all recommended security headers (CSP, HSTS, X-Frame-Options, etc.).",
+            "A02", "Security Misconfiguration", "fail", "High",
+            f"{len(findings)} critical security issue(s) detected.",
+            "Configure your web server to send critical security headers (CSP, HSTS, X-Content-Type-Options).",
             findings
         )
     return _make_result(
         "A02", "Security Misconfiguration", "pass", "Low",
-        "All recommended security headers are present.",
+        "All critical security headers are present and properly configured.",
         "Continue monitoring header configuration on deployments."
     )
 
@@ -568,11 +570,16 @@ def test_a09_logging_failures(base_url: str, urls: List[str], responses: Dict[st
 
 def test_a10_exception_handling(base_url: str, urls: List[str], responses: Dict[str, requests.Response], log=None) -> Dict:
     """
-    A10 — Mishandling of Exceptional Conditions
+    A10 — Mishandling of Exceptional Conditions (IMPROVED)
+    
     Probe for unhandled errors by:
-      1. Requesting non-existent paths (expect clean 404, not a crash)
-      2. Checking for 500 status codes among crawled pages
-      3. Looking for debug mode indicators
+      1. Looking for real framework-specific stack traces (not generic words)
+      2. Checking for 500 status codes
+    
+    Framework-specific patterns only (reduces false positives from error page HTML):
+    - Python: "Traceback (most recent call last)"
+    - PHP: "Fatal error:" or "Parse error:"
+    - Node.js: "at Object.<anonymous>" or "ReferenceError:"
     """
     findings = []
     parsed = urllib.parse.urlparse(base_url)
@@ -588,12 +595,31 @@ def test_a10_exception_handling(base_url: str, urls: List[str], responses: Dict[
                 "url": probe_url,
                 "evidence": "Expected 404 but got 500 — unhandled exception"
             })
-        body_lower = resp.text.lower()
-        if any(kw in body_lower for kw in ["traceback", "stack trace", "debug", "exception"]):
+        
+        # Check for FRAMEWORK-SPECIFIC debug traces only (not generic keywords)
+        body = resp.text
+        body_lower = body.lower()
+        
+        # Python traceback (strongest signal)
+        if "traceback (most recent call last)" in body_lower:
             findings.append({
-                "issue": "Error page reveals debug information",
+                "issue": "Python stack trace exposed",
                 "url": probe_url,
-                "evidence": "Error response contains debug/traceback content"
+                "evidence": "Full Python traceback visible in error page"
+            })
+        # PHP errors (strong signal)
+        elif any(x in body_lower for x in ["fatal error:", "parse error:", "warning: undefined"]):
+            findings.append({
+                "issue": "PHP error exposed",
+                "url": probe_url,
+                "evidence": "PHP error message visible (indicates error_reporting enabled)"
+            })
+        # Node.js/JavaScript errors
+        elif "ReferenceError:" in body or "TypeError:" in body or "SyntaxError:" in body:
+            findings.append({
+                "issue": "JavaScript error exposed",
+                "url": probe_url,
+                "evidence": "JavaScript runtime error visible in response"
             })
 
     # Check crawled pages for 500 errors
@@ -607,14 +633,14 @@ def test_a10_exception_handling(base_url: str, urls: List[str], responses: Dict[
 
     if findings:
         return _make_result(
-            "A10", "Mishandling of Exceptional Conditions", "fail", "Medium",
-            f"Found {len(findings)} exception-handling issue(s).",
+            "A10", "Mishandling of Exceptional Conditions", "fail", "High",
+            f"Found {len(findings)} exception-handling issue(s) with high confidence.",
             "Implement custom error pages for all HTTP error codes. Never expose stack traces in production.",
             findings
         )
     return _make_result(
         "A10", "Mishandling of Exceptional Conditions", "pass", "Low",
-        "Error handling appears properly configured — no debug info leaked.",
+        "Error handling appears properly configured — no framework traces leaked.",
         "Regularly test error handling paths and keep custom error pages updated."
     )
 

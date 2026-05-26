@@ -6,9 +6,11 @@ import OWASPTable from './components/OWASPTable';
 import VulnerabilityList from './components/VulnerabilityList';
 import ScanLogs from './components/ScanLogs';
 import ReportExport from './components/ReportExport';
+import ScanHistory from './components/ScanHistory';
 import { PassFailChart, OWASPRadarChart, SeverityDonut } from './components/Charts';
 
 export default function App() {
+  const [currentPage, setCurrentPage] = useState('scanner'); // 'scanner' or 'history'
   const [url, setUrl] = useState('http://testphp.vulnweb.com');
   const [status, setStatus] = useState('idle'); // idle, running, completed, error
   const [error, setError] = useState('');
@@ -95,13 +97,58 @@ export default function App() {
     }
   };
 
+  // Show history page if selected
+  if (currentPage === 'history') {
+    return (
+      <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-200 font-body">
+        {/* Background grid effect */}
+        <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFlMjkzYiIgb3BhY2l0eT0iMC4zIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30 pointer-events-none" />
+
+        <div className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+          {/* Header with nav tabs */}
+          <header className="mb-8 flex flex-col items-start justify-between rounded-2xl border border-white/10 bg-slate-800/50 backdrop-blur-md p-6 shadow-xl md:flex-row md:items-center">
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 shadow-lg shadow-indigo-500/20">
+                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-xs font-bold tracking-[0.2em] text-indigo-400 uppercase">SecureScan</p>
+                <h1 className="text-2xl font-extrabold text-white font-heading">Security Dashboard</h1>
+              </div>
+            </div>
+            {/* Navigation tabs */}
+            <div className="mt-4 flex gap-2 md:mt-0">
+              <button
+                onClick={() => setCurrentPage('scanner')}
+                className="px-4 py-2 rounded-lg bg-slate-700/50 hover:bg-slate-700 text-slate-300 font-semibold transition-colors"
+              >
+                Scanner
+              </button>
+              <button
+                onClick={() => setCurrentPage('history')}
+                className="px-4 py-2 rounded-lg bg-indigo-600 text-white font-semibold transition-colors"
+              >
+                History
+              </button>
+            </div>
+          </header>
+
+          <ScanHistory />
+        </div>
+      </main>
+    );
+  }
+
+  // Scanner page (default)
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-200 font-body">
       {/* Background grid effect */}
       <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFlMjkzYiIgb3BhY2l0eT0iMC4zIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30 pointer-events-none" />
 
       <div className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* ── Header ── */}
+        {/* Header */}
         <header className="mb-8 flex flex-col items-start justify-between rounded-2xl border border-white/10 bg-slate-800/50 backdrop-blur-md p-6 shadow-xl md:flex-row md:items-center">
           <div className="flex items-center gap-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 shadow-lg shadow-indigo-500/20">
@@ -117,15 +164,32 @@ export default function App() {
               </p>
             </div>
           </div>
-          {status === 'running' && (
-            <div className="mt-4 flex items-center gap-3 rounded-full bg-indigo-500/10 border border-indigo-500/20 px-4 py-2 text-indigo-400 md:mt-0">
-              <span className="relative flex h-3 w-3">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75" />
-                <span className="relative inline-flex h-3 w-3 rounded-full bg-indigo-500" />
-              </span>
-              <span className="font-medium text-sm">Scan Engine Running...</span>
+          <div className="flex items-center gap-4 mt-4 md:mt-0">
+            {status === 'running' && (
+              <div className="flex items-center gap-3 rounded-full bg-indigo-500/10 border border-indigo-500/20 px-4 py-2 text-indigo-400">
+                <span className="relative flex h-3 w-3">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75" />
+                  <span className="relative inline-flex h-3 w-3 rounded-full bg-indigo-500" />
+                </span>
+                <span className="font-medium text-sm">Scan Engine Running...</span>
+              </div>
+            )}
+            {/* Navigation tabs */}
+            <div className="flex gap-2">
+              <button
+                onClick={() => setCurrentPage('scanner')}
+                className="px-4 py-2 rounded-lg bg-indigo-600 text-white font-semibold transition-colors"
+              >
+                Scanner
+              </button>
+              <button
+                onClick={() => setCurrentPage('history')}
+                className="px-4 py-2 rounded-lg bg-slate-700/50 hover:bg-slate-700 text-slate-300 font-semibold transition-colors"
+              >
+                History
+              </button>
             </div>
-          )}
+          </div>
         </header>
 
         {/* ── Scan Form ── */}

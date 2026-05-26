@@ -26,3 +26,14 @@ export const getScanReport = async (url) => {
   const response = await axios.get(`${API_BASE}/scan/report`, { params: { url } });
   return response.data;
 };
+
+// History & Timeline APIs
+export const getScanHistory = async (page = 1, limit = 10) => {
+  const response = await axios.get(`${API_BASE}/scan/history`, { params: { page, limit } });
+  return response.data;
+};
+
+export const getHistoricalScanReport = async (scanId) => {
+  const response = await axios.get(`${API_BASE}/scan/report/${scanId}`);
+  return response.data;
+};

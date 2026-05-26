@@ -286,6 +286,154 @@ def scan_report():
 
 
 # ---------------------------------------------------------------------------
+# History & Timeline
+# ---------------------------------------------------------------------------
+
+@app.get("/api/scan/history")
+def scan_history():
+    """Returns a list of all scans with pagination."""
+    page = request.args.get("page", 1, type=int)
+    limit = request.args.get("limit", 10, type=int)
+    offset = (page - 1) * limit
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    # Get total count
+    cursor.execute("SELECT COUNT(*) FROM scans")
+    total = cursor.fetchone()[0]
+
+    # Get paginated scans ordered by date descending
+    cursor.execute(
+        "SELECT id, target_url, status, score, grade, started_at, completed_at, tests_passed, tests_total "
+        "FROM scans ORDER BY started_at DESC LIMIT ? OFFSET ?",
+        (limit, offset)
+    )
+    rows = cursor.fetchall()
+    conn.close()
+
+    scans = []
+    for row in rows:
+        scans.append({
+            "id": row[0],
+            "target_url": row[1],
+            "status": row[2],
+            "score": row[3],
+            "grade": row[4],
+            "started_at": row[5],
+            "completed_at": row[6],
+            "tests_passed": row[7],
+            "tests_total": row[8]
+        })
+
+    return jsonify({
+        "scans": scans,
+        "total": total,
+        "page": page,
+        "limit": limit,
+        "total_pages": (total + limit - 1) // limit
+    }), 200
+
+
+@app.get("/api/scan/report/<int:scan_id>")
+def historical_scan_report(scan_id):
+    """Returns full report for a specific historical scan by ID."""
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    # Get scan metadata
+    cursor.execute(
+        "SELECT id, target_url, status, score, grade, tests_passed, tests_total, started_at, completed_at "
+        "FROM scans WHERE id=?",
+        (scan_id,)
+    )
+    scan_row = cursor.fetchone()
+
+    if not scan_row:
+        conn.close()
+        return jsonify({"error": "Scan not found"}), 404
+
+    target_url = scan_row[1]
+
+    # Get OWASP results
+    cursor.execute(
+        "SELECT owasp_id, owasp_name, status, severity, description, recommendation, findings_json "
+        "FROM scan_results WHERE scan_id=? ORDER BY owasp_id ASC",
+        (scan_id,)
+    )
+    owasp_rows = cursor.fetchall()
+
+    owasp_results = []
+    for r in owasp_rows:
+        owasp_results.append({
+            "owasp_id": r[0],
+            "owasp_name": r[1],
+            "status": r[2],
+            "severity": r[3],
+            "description": r[4],
+            "recommendation": r[5],
+            "findings": json.loads(r[6]) if r[6] else []
+        })
+
+    # Get raw vulnerabilities
+    cursor.execute(
+        "SELECT type, url, parameter, payload, severity, description, owasp_category "
+        "FROM vulnerabilities WHERE scan_id=?",
+        (scan_id,)
+    )
+    vulns = cursor.fetchall()
+
+    # Get pages crawled
+    cursor.execute("SELECT url FROM pages WHERE scan_id=?", (scan_id,))
+    pages = [row[0] for row in cursor.fetchall()]
+
+    # Get logs for this scan
+    cursor.execute(
+        "SELECT message, timestamp FROM logs WHERE scan_id=? ORDER BY id ASC",
+        (scan_id,)
+    )
+    log_rows = cursor.fetchall()
+
+    conn.close()
+
+    findings = []
+    for v in vulns:
+        findings.append({
+            "type": v[0],
+            "url": v[1],
+            "parameter": v[2],
+            "payload": v[3],
+            "severity": v[4],
+            "description": v[5],
+            "owasp_category": v[6]
+        })
+
+    logs = [{"message": r[0], "timestamp": r[1]} for r in log_rows]
+
+    return jsonify({
+        "scan_id": scan_row[0],
+        "target": target_url,
+        "status": scan_row[2],
+        "score": scan_row[3],
+        "grade": scan_row[4],
+        "tests_passed": scan_row[5],
+        "tests_total": scan_row[6],
+        "started_at": scan_row[7],
+        "completed_at": scan_row[8],
+        "pages_crawled": len(pages),
+        "owasp_results": owasp_results,
+        "vulnerabilities": findings,
+        "logs": logs,
+        "summary": {
+            "total": len(findings),
+            "high": sum(1 for f in findings if f["severity"] == "High"),
+            "medium": sum(1 for f in findings if f["severity"] == "Medium"),
+            "low": sum(1 for f in findings if f["severity"] == "Low"),
+        }
+    }), 200
+
+
+# ---------------------------------------------------------------------------
 # Logs
 # ---------------------------------------------------------------------------
 
