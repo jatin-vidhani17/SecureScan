@@ -25,9 +25,25 @@ class FrameworkSpecificDetector(BaseDetector):
                     "/wp-json/wp/v2/users",  # User enumeration
                     "/wp-admin/",  # Admin panel accessible?
                     "/xmlrpc.php",  # XML-RPC enabled?
+                    "/wp-login.php",
+                    "/readme.html",
                 ],
                 "headers": ["X-Powered-By"],
                 "vulnerabilities": ["xmlrpc_enabled", "user_enumeration", "admin_accessible"]
+            },
+            "joomla": {
+                "endpoints": [
+                    "/administrator/",
+                    "/language/en-GB/en-GB.xml",
+                ],
+                "checks": ["admin_accessible", "version_disclosure"],
+            },
+            "drupal": {
+                "endpoints": [
+                    "/user/login",
+                    "/core/install.php",
+                ],
+                "checks": ["install_exposed", "login_exposed"],
             },
             "django": {
                 "endpoints": [
@@ -42,6 +58,13 @@ class FrameworkSpecificDetector(BaseDetector):
                     "/storage/logs/laravel.log",  # Log exposure
                 ],
                 "checks": ["artisan_exposed", "logs_exposed", "key_exposure"]
+            },
+            "flask": {
+                "endpoints": [
+                    "/console",  # Werkzeug debugger
+                    "/debug",
+                ],
+                "checks": ["debug_console"],
             },
             "spring_boot": {
                 "endpoints": [
@@ -133,7 +156,16 @@ class FrameworkSpecificDetector(BaseDetector):
             base_url = f"{parsed.scheme}://{parsed.netloc}"
             
             # Detect framework
-            framework = self._detect_tech_stack(url)
+            context_stack = (self.context.get("tech_stack") or {}) if hasattr(self, "context") else {}
+            framework = context_stack.get("primary") if context_stack else None
+            if not framework or framework == "unknown":
+                framework = self._detect_tech_stack(url)
+
+            framework_map = {
+                "asp_net": "aspnet",
+                "nodejs": "express",
+            }
+            framework = framework_map.get(framework, framework)
             if not framework or framework not in self.framework_checks:
                 return None
             

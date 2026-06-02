@@ -4,7 +4,7 @@
 
 **Project Title:** SecureScan — An Automated Web Application Vulnerability Scanner Based on OWASP Top 10  
 **Student Name:** Jatin Vidhani  
-**Programme:** MCA (Master of Computer Applications)  
+**Programme:** M.S.c IS (Master in Science of Information Security)  
 **University:** Indira Gandhi National Open University (IGNOU)
 
 ---
@@ -140,18 +140,19 @@ SecureScan follows an **incremental development methodology**:
 
 ### 4.2 Scanning Methodology
 
-SecureScan's scanning pipeline follows a four-stage process:
+SecureScan's scanning pipeline follows a five-stage process:
 
 ```
-┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│   CRAWLING   │───▶│   FETCHING   │───▶│   TESTING    │───▶│   SCORING    │
-│              │    │              │    │              │    │              │
-│ BFS spider   │    │ HTTP GET all │    │ 10 OWASP     │    │ 0-100 score  │
-│ Discover     │    │ discovered   │    │ security     │    │ A-F grade    │
-│ all pages    │    │ URLs + store │    │ tests        │    │ Pass/Fail    │
-│              │    │ responses    │    │              │    │ per test     │
-└──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
+┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│ TECH STACK   │───▶│   CRAWLING   │───▶│   FETCHING   │───▶│   TESTING    │───▶│   SCORING    │
+│ DETECTION    │    │              │    │              │    │              │    │              │
+│ Headers +    │    │ BFS spider   │    │ HTTP GET all │    │ 10 OWASP     │    │ 0-100 score  │
+│ HTML markers │    │ Discover     │    │ discovered   │    │ security     │    │ A-F grade    │
+│              │    │ all pages    │    │ URLs + store │    │ tests        │    │ Pass/Fail    │
+└──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
 ```
+
+**Stage 0 — Tech Stack Detection:** The scanner fingerprints the target using HTTP headers, cookies, and HTML markers (e.g., WordPress, Django, Spring Boot, React). The detected stack is stored with the scan and used to tune framework-specific detectors.
 
 **Stage 1 — Crawling:** A breadth-first spider discovers all reachable pages within the target domain up to a configurable depth (default: 2). Only pages with `text/html` content type are followed.
 
@@ -207,7 +208,7 @@ Each OWASP test is worth **10 points** (total: 100). Deductions are weighted by 
 │  ┌────────────┐ ┌────────────┐ ┌──────────────────────┐ │
 │  │  Crawler   │ │ Detectors  │ │   Scoring Engine     │ │
 │  │  BFS       │ │ SQLi/XSS/  │ │   0-100 / A-F        │ │
-│  │  Spider    │ │ SensData   │ │                      │ │
+│  │  Spider    │ │ Tech-aware │ │                      │ │
 │  └────────────┘ └────────────┘ └──────────────────────┘ │
 └───────────────────────┬─────────────────────────────────┘
                         │
@@ -225,7 +226,7 @@ Each OWASP test is worth **10 points** (total: 100). Deductions are weighted by 
 ### 5.2 Database Schema
 
 **scans** — Master scan records with scoring data:
-- `id`, `target_url`, `status`, `score`, `grade`, `tests_passed`, `tests_total`, `started_at`, `completed_at`
+- `id`, `target_url`, `status`, `score`, `grade`, `tests_passed`, `tests_total`, `tech_stack`, `tech_stack_confidence`, `tech_stack_details`, `started_at`, `completed_at`
 
 **scan_results** — Individual OWASP test outcomes:
 -  `id`, `scan_id`, `owasp_id`, `owasp_name`, `status`, `severity`, `description`, `recommendation`, `findings_json`
@@ -266,7 +267,8 @@ SecureScan/
 │   ├── core/
 │   │   ├── engine.py           # Main scan orchestrator
 │   │   ├── owasp_tests.py      # 10 OWASP test functions
-│   │   └── scoring.py          # Score calculation engine
+│   │   ├── scoring.py          # Score calculation engine
+│   │   └── techstack.py        # Tech stack fingerprinting
 │   ├── crawler/
 │   │   └── crawler.py          # BFS web crawler
 │   ├── detectors/

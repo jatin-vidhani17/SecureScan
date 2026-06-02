@@ -12,6 +12,7 @@ class Crawler:
         self.to_visit: List[tuple[str, int]] = [(target_url, 0)]
         self.base_domain = urllib.parse.urlparse(target_url).netloc
         self.log_callback = log_callback
+        self.cancel_requested = None  # ScannerEngine ref to check cancellation
 
     def log(self, msg: str):
         print(msg)
@@ -22,6 +23,12 @@ class Crawler:
         """Crawls the target site and returns a list of discovered URLs within the same domain."""
         self.log(f"Starting crawl for {self.target_url} up to depth {self.max_depth}")
         while self.to_visit:
+            # Check cancellation flag
+            if self.cancel_requested and hasattr(self.cancel_requested, 'cancel_requested'):
+                if self.cancel_requested.cancel_requested:
+                    self.log("Crawl cancelled by user")
+                    break
+            
             current_url, current_depth = self.to_visit.pop(0)
 
             if current_depth > self.max_depth:

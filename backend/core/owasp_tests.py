@@ -96,7 +96,8 @@ def test_a01_broken_access_control(base_url: str, urls: List[str], responses: Di
         return _make_result(
             "A01", "Broken Access Control", "fail", "High",
             f"Found {len(findings)} access control issue(s).",
-            "Disable directory listing in server config.",
+            "Disable directory listing (e.g., Apache Options -Indexes, Nginx autoindex off). "
+            "Restrict sensitive paths with authentication/authorization.",
             findings
         )
     return _make_result(
@@ -177,7 +178,8 @@ def test_a02_security_misconfiguration(base_url: str, urls: List[str], responses
         return _make_result(
             "A02", "Security Misconfiguration", "fail", "High",
             f"{len(findings)} critical security issue(s) detected.",
-            "Configure your web server to send critical security headers (CSP, HSTS, X-Content-Type-Options).",
+            "Add critical security headers: CSP (avoid '*' and unsafe-inline), "
+            "HSTS with a long max-age, and X-Content-Type-Options: nosniff.",
             findings
         )
     return _make_result(
@@ -224,7 +226,8 @@ def test_a03_supply_chain(base_url: str, urls: List[str], responses: Dict[str, r
         return _make_result(
             "A03", "Software Supply Chain Failures", "fail", "Medium",
             f"Found {len(findings)} outdated library reference(s) that may contain known vulnerabilities.",
-            "Update all client-side libraries to their latest stable versions.",
+            "Upgrade client-side libraries to supported versions and pin them via lockfiles. "
+            "Validate dependency updates in staging before production.",
             findings
         )
     return _make_result(
@@ -285,7 +288,8 @@ def test_a04_cryptographic_failures(base_url: str, urls: List[str], responses: D
         return _make_result(
             "A04", "Cryptographic Failures", "fail", "High",
             f"Found {len(findings)} cryptographic / data-exposure issue(s).",
-            "Use HTTPS everywhere. Remove sensitive data from HTML responses. Avoid mixed content.",
+            "Enforce HTTPS site-wide (redirect HTTP → HTTPS, enable HSTS). "
+            "Remove secrets from HTML responses and eliminate mixed-content requests.",
             findings
         )
     return _make_result(
@@ -342,7 +346,8 @@ def test_a05_injection(base_url: str, urls: List[str], responses: Dict[str, requ
         return _make_result(
             "A05", "Injection", "fail", "High",
             f"Found {len(findings)} injection vulnerability/ies (SQLi / XSS).",
-            "Use parameterized queries for SQL. Sanitise and encode all user input before rendering in HTML.",
+            "Use parameterized queries/ORMs for SQL. Validate input server-side and apply "
+            "context-aware output encoding to prevent XSS.",
             findings
         )
     return _make_result(
@@ -391,7 +396,7 @@ def test_a06_insecure_design(base_url: str, urls: List[str], responses: Dict[str
         return _make_result(
             "A06", "Insecure Design", "fail", "Medium",
             f"Found {len(findings)} page(s) exposing verbose error messages or stack traces.",
-            "Configure custom error pages. Never expose stack traces or debug info in production.",
+            "Disable debug mode and configure custom error pages. Log stack traces server-side only.",
             findings
         )
     return _make_result(
@@ -449,7 +454,8 @@ def test_a07_authentication_failures(base_url: str, urls: List[str], responses: 
         return _make_result(
             "A07", "Authentication Failures", "fail", "High",
             f"Found {len(findings)} authentication-related issue(s).",
-            "Add CSRF tokens to all forms. Ensure login forms submit over HTTPS.",
+            "Add CSRF tokens to all state-changing forms and enforce HTTPS on authentication routes. "
+            "Use secure, HttpOnly cookies and strong password policies.",
             findings
         )
     return _make_result(
@@ -499,7 +505,8 @@ def test_a08_integrity_failures(base_url: str, urls: List[str], responses: Dict[
         return _make_result(
             "A08", "Software & Data Integrity Failures", "fail", "Medium",
             f"Found {len(findings)} external script(s) loaded without Subresource Integrity (SRI).",
-            "Add integrity and crossorigin attributes to all external <script> tags.",
+            "Add SRI hashes and crossorigin attributes to all external scripts. "
+            "Prefer self-hosting critical libraries where possible.",
             findings
         )
     return _make_result(
@@ -554,7 +561,8 @@ def test_a09_logging_failures(base_url: str, urls: List[str], responses: Dict[st
         return _make_result(
             "A09", "Security Logging & Alerting Failures", "fail", "Low",
             f"Found {len(findings)} logging/alerting concern(s).",
-            "Implement request correlation IDs. Remove version info from Server header. Set up centralized logging.",
+            "Add request correlation IDs (X-Request-Id) and centralize log collection. "
+            "Remove version details from Server headers and configure alerting on auth failures.",
             findings
         )
     return _make_result(
@@ -635,7 +643,8 @@ def test_a10_exception_handling(base_url: str, urls: List[str], responses: Dict[
         return _make_result(
             "A10", "Mishandling of Exceptional Conditions", "fail", "High",
             f"Found {len(findings)} exception-handling issue(s) with high confidence.",
-            "Implement custom error pages for all HTTP error codes. Never expose stack traces in production.",
+            "Implement safe error handling for all HTTP errors. Never expose stack traces or runtime errors; "
+            "log them internally with correlation IDs.",
             findings
         )
     return _make_result(

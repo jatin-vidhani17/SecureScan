@@ -11,9 +11,9 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import sqlite3
 
-from core.engine import ScannerEngine
+from core.engine import ScannerEngine, RUNNING_SCANS
 from security import validate_target_url
-from database import DB_PATH
+from database import DB_PATH, has_running_scan
 
 load_dotenv()
 
@@ -61,6 +61,12 @@ def start_scan():
     try:
         target_url = validate_target_url(raw_url)
 
+        # Block concurrent scans — only one scan at a time
+        if RUNNING_SCANS or has_running_scan():
+            return jsonify({
+                "error": "A scan is already running. Please wait for it to finish or cancel it first."
+            }), 409
+
         # Start in background
         thread = threading.Thread(target=run_background_scan, args=(target_url,))
         thread.start()
@@ -73,6 +79,29 @@ def start_scan():
         return jsonify({"error": "Scan failed due to an unexpected error"}), 500
 
 
+@app.post("/api/scan/cancel")
+def cancel_scan():
+    """Cancel an ongoing scan."""
+    payload = request.get_json(silent=True) or {}
+    target_url = payload.get("url", "")
+
+    if not target_url:
+        return jsonify({"error": "URL parameter required"}), 400
+
+    try:
+        target_url = validate_target_url(target_url)
+        
+        if target_url in RUNNING_SCANS:
+            engine = RUNNING_SCANS[target_url]
+            engine.cancel_requested = True
+            return jsonify({"message": "Scan cancellation requested", "target": target_url}), 200
+        else:
+            return jsonify({"error": "No running scan found for this URL"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 @app.get("/api/scan/status")
 def scan_status():
     target_url = request.args.get("url")
@@ -82,7 +111,8 @@ def scan_status():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT status, started_at, completed_at, score, grade, tests_passed, tests_total "
+        "SELECT status, started_at, completed_at, score, grade, tests_passed, tests_total, "
+        "tech_stack, tech_stack_confidence, tech_stack_details "
         "FROM scans WHERE target_url=? ORDER BY id DESC LIMIT 1",
         (target_url,)
     )
@@ -100,6 +130,9 @@ def scan_status():
         "grade": row[4],
         "tests_passed": row[5],
         "tests_total": row[6],
+        "tech_stack": row[7],
+        "tech_stack_confidence": row[8],
+        "tech_stack_details": json.loads(row[9]) if row[9] else None,
     }), 200
 
 
@@ -118,7 +151,7 @@ def scan_results():
 
     # Get the latest scan for this URL
     cursor.execute(
-        "SELECT id, score, grade, tests_passed, tests_total "
+        "SELECT id, score, grade, tests_passed, tests_total, tech_stack, tech_stack_confidence, tech_stack_details "
         "FROM scans WHERE target_url=? ORDER BY id DESC LIMIT 1",
         (target_url,)
     )
@@ -129,6 +162,9 @@ def scan_results():
         return jsonify({"error": "No scan found"}), 404
 
     scan_id = scan_row[0]
+    tech_stack = scan_row[5]
+    tech_stack_confidence = scan_row[6]
+    tech_stack_details = json.loads(scan_row[7]) if scan_row[7] else None
 
     # Get OWASP test results
     cursor.execute(
@@ -177,6 +213,9 @@ def scan_results():
         "grade": scan_row[2],
         "tests_passed": scan_row[3],
         "tests_total": scan_row[4],
+        "tech_stack": tech_stack,
+        "tech_stack_confidence": tech_stack_confidence,
+        "tech_stack_details": tech_stack_details,
         "owasp_results": owasp_results,
         "vulnerabilities": findings,
         "summary": {
@@ -203,7 +242,8 @@ def scan_report():
     cursor = conn.cursor()
 
     cursor.execute(
-        "SELECT id, score, grade, tests_passed, tests_total, started_at, completed_at "
+        "SELECT id, score, grade, tests_passed, tests_total, started_at, completed_at, "
+        "tech_stack, tech_stack_confidence, tech_stack_details "
         "FROM scans WHERE target_url=? ORDER BY id DESC LIMIT 1",
         (target_url,)
     )
@@ -214,6 +254,9 @@ def scan_report():
         return jsonify({"error": "No scan found"}), 404
 
     scan_id = scan_row[0]
+    tech_stack = scan_row[7]
+    tech_stack_confidence = scan_row[8]
+    tech_stack_details = json.loads(scan_row[9]) if scan_row[9] else None
 
     # OWASP results
     cursor.execute(
@@ -266,6 +309,9 @@ def scan_report():
         "grade": scan_row[2],
         "tests_passed": scan_row[3],
         "tests_total": scan_row[4],
+        "tech_stack": tech_stack,
+        "tech_stack_confidence": tech_stack_confidence,
+        "tech_stack_details": tech_stack_details,
         "pages_crawled": len(pages),
         "owasp_results": owasp_results,
         "vulnerabilities": findings,
@@ -305,7 +351,8 @@ def scan_history():
 
     # Get paginated scans ordered by date descending
     cursor.execute(
-        "SELECT id, target_url, status, score, grade, started_at, completed_at, tests_passed, tests_total "
+        "SELECT id, target_url, status, score, grade, started_at, completed_at, tests_passed, tests_total, "
+        "tech_stack, tech_stack_confidence "
         "FROM scans ORDER BY started_at DESC LIMIT ? OFFSET ?",
         (limit, offset)
     )
@@ -323,7 +370,9 @@ def scan_history():
             "started_at": row[5],
             "completed_at": row[6],
             "tests_passed": row[7],
-            "tests_total": row[8]
+            "tests_total": row[8],
+            "tech_stack": row[9],
+            "tech_stack_confidence": row[10]
         })
 
     return jsonify({
@@ -343,7 +392,8 @@ def historical_scan_report(scan_id):
 
     # Get scan metadata
     cursor.execute(
-        "SELECT id, target_url, status, score, grade, tests_passed, tests_total, started_at, completed_at "
+        "SELECT id, target_url, status, score, grade, tests_passed, tests_total, started_at, completed_at, "
+        "tech_stack, tech_stack_confidence, tech_stack_details "
         "FROM scans WHERE id=?",
         (scan_id,)
     )
@@ -354,6 +404,9 @@ def historical_scan_report(scan_id):
         return jsonify({"error": "Scan not found"}), 404
 
     target_url = scan_row[1]
+    tech_stack = scan_row[9]
+    tech_stack_confidence = scan_row[10]
+    tech_stack_details = json.loads(scan_row[11]) if scan_row[11] else None
 
     # Get OWASP results
     cursor.execute(
@@ -420,6 +473,9 @@ def historical_scan_report(scan_id):
         "tests_total": scan_row[6],
         "started_at": scan_row[7],
         "completed_at": scan_row[8],
+        "tech_stack": tech_stack,
+        "tech_stack_confidence": tech_stack_confidence,
+        "tech_stack_details": tech_stack_details,
         "pages_crawled": len(pages),
         "owasp_results": owasp_results,
         "vulnerabilities": findings,

@@ -18,6 +18,11 @@ class BaseDetector(ABC):
         """
         self.name = name
         self.owasp_category = owasp_category
+        self.context: Dict[str, Any] = {}
+
+    def set_context(self, context: Dict[str, Any]) -> None:
+        """Attach scan context (e.g., detected tech stack) for detector tuning."""
+        self.context = context or {}
 
     @abstractmethod
     def scan_url(self, url: str) -> Optional[Dict[str, Any]]:

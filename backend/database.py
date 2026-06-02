@@ -32,10 +32,15 @@ def init_db():
             grade TEXT DEFAULT NULL,
             tests_passed INTEGER DEFAULT NULL,
             tests_total INTEGER DEFAULT 10,
+            tech_stack TEXT DEFAULT NULL,
+            tech_stack_confidence REAL DEFAULT NULL,
+            tech_stack_details TEXT DEFAULT NULL,
             started_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             completed_at DATETIME
         )
     """)
+
+    _ensure_scan_columns(conn)
 
     # --- Logs table ---
     cursor.execute("""
@@ -122,6 +127,30 @@ def complete_scan(scan_id: int):
     conn.close()
 
 
+def cancel_scan(scan_id: int):
+    """Mark a scan as cancelled with current timestamp."""
+    conn = _get_conn()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE scans SET status='cancelled', completed_at=CURRENT_TIMESTAMP WHERE id=?",
+        (scan_id,)
+    )
+    conn.commit()
+    conn.close()
+
+
+def mark_scan_error(scan_id: int, error_message: str):
+    """Mark a scan as errored with error message."""
+    conn = _get_conn()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE scans SET status='error', completed_at=CURRENT_TIMESTAMP WHERE id=?",
+        (scan_id,)
+    )
+    conn.commit()
+    conn.close()
+
+
 def update_scan_score(scan_id: int, score: int, grade: str, tests_passed: int, tests_total: int):
     """Update the scan record with the calculated score and grade."""
     conn = _get_conn()
@@ -132,6 +161,37 @@ def update_scan_score(scan_id: int, score: int, grade: str, tests_passed: int, t
     )
     conn.commit()
     conn.close()
+
+
+def update_scan_tech_stack(scan_id: int, tech_stack: str, confidence: float, details_json: str):
+    """Update the scan record with detected tech stack information."""
+    conn = _get_conn()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE scans SET tech_stack=?, tech_stack_confidence=?, tech_stack_details=? WHERE id=?",
+        (tech_stack, confidence, details_json, scan_id)
+    )
+    conn.commit()
+    conn.close()
+
+
+def _ensure_scan_columns(conn: sqlite3.Connection):
+    """Ensure new scan columns exist in older databases."""
+    cursor = conn.cursor()
+    cursor.execute("PRAGMA table_info(scans)")
+    existing_columns = {row[1] for row in cursor.fetchall()}
+
+    required_columns = {
+        "tech_stack": "TEXT",
+        "tech_stack_confidence": "REAL",
+        "tech_stack_details": "TEXT",
+    }
+
+    for column, col_type in required_columns.items():
+        if column not in existing_columns:
+            cursor.execute(f"ALTER TABLE scans ADD COLUMN {column} {col_type}")
+
+    conn.commit()
 
 
 # ---------------------------------------------------------------------------
@@ -223,5 +283,32 @@ def get_logs(scan_id: int) -> List[Dict[str, Any]]:
     return [{"message": r[0], "timestamp": r[1]} for r in rows]
 
 
+def cleanup_stale_scans():
+    """Mark any scans left in 'running' status as 'interrupted'.
+    This handles the case where the server was killed mid-scan."""
+    conn = _get_conn()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE scans SET status='interrupted', completed_at=CURRENT_TIMESTAMP "
+        "WHERE status='running'"
+    )
+    count = cursor.rowcount
+    conn.commit()
+    conn.close()
+    if count > 0:
+        print(f"[DB Cleanup] Marked {count} stale running scan(s) as 'interrupted'.")
+
+
+def has_running_scan() -> bool:
+    """Check if there is any scan currently in 'running' status."""
+    conn = _get_conn()
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM scans WHERE status='running'")
+    count = cursor.fetchone()[0]
+    conn.close()
+    return count > 0
+
+
 # Initialize upon import
 init_db()
+cleanup_stale_scans()

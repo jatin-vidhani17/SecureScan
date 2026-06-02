@@ -29,6 +29,16 @@ class AccessControlDetector(BaseDetector):
                 "patterns": [r"define\s*\(\s*['\"]DB_", r"WORDPRESS_CONFIG"],
                 "severity": "High"
             },
+            "joomla": {
+                "paths": ["/configuration.php", "/administrator/", "/administrator/index.php"],
+                "patterns": [r"\$dbtype", r"\$dbuser", r"\$password"],
+                "severity": "High"
+            },
+            "drupal": {
+                "paths": ["/sites/default/settings.php", "/user/login", "/core/install.php"],
+                "patterns": [r"\$databases", r"\$settings", r"drupal"],
+                "severity": "High"
+            },
             "php": {
                 "paths": ["/config.php", "/config/database.php", "/includes/config.php", 
                          "/config/config.php", "/api/config.php"],
@@ -44,6 +54,11 @@ class AccessControlDetector(BaseDetector):
             "django": {
                 "paths": ["/settings.py", "/wsgi.py", "/requirements.txt"],
                 "patterns": [r"SECRET_KEY\s*=", r"DATABASES\s*=", r"DEBUG\s*="],
+                "severity": "High"
+            },
+            "flask": {
+                "paths": ["/config.py", "/instance/config.py", "/requirements.txt"],
+                "patterns": [r"SECRET_KEY\s*=", r"SQLALCHEMY_DATABASE_URI", r"DEBUG\s*="],
                 "severity": "High"
             },
             "java": {
@@ -200,11 +215,20 @@ class AccessControlDetector(BaseDetector):
             
             # Detect tech stack
             if self.tech_stack is None:
-                try:
-                    sample_resp = requests.get(url, timeout=5)
-                    self.tech_stack = self._detect_tech_stack(sample_resp)
-                except:
-                    self.tech_stack = {"stack": "unknown"}
+                context_stack = (self.context.get("tech_stack") or {}) if hasattr(self, "context") else {}
+                stack_hint = context_stack.get("primary")
+                if stack_hint and stack_hint != "unknown":
+                    stack_map = {"express": "nodejs"}
+                    self.tech_stack = {
+                        "stack": stack_map.get(stack_hint, stack_hint),
+                        "confidence": context_stack.get("confidence", 0.0)
+                    }
+                else:
+                    try:
+                        sample_resp = requests.get(url, timeout=5)
+                        self.tech_stack = self._detect_tech_stack(sample_resp)
+                    except requests.RequestException:
+                        self.tech_stack = {"stack": "unknown"}
             
             tech_stack = self.tech_stack.get("stack", "unknown")
             

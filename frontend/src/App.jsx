@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
-import { startScan, getScanStatus, getScanResults, getScanLogs } from './api';
+import { startScan, cancelScan, getScanStatus, getScanResults, getScanLogs } from './api';
 
 import ScoreCard from './components/ScoreCard';
 import OWASPTable from './components/OWASPTable';
@@ -12,7 +12,7 @@ import { PassFailChart, OWASPRadarChart, SeverityDonut } from './components/Char
 export default function App() {
   const [currentPage, setCurrentPage] = useState('scanner'); // 'scanner' or 'history'
   const [url, setUrl] = useState('http://testphp.vulnweb.com');
-  const [status, setStatus] = useState('idle'); // idle, running, completed, error
+  const [status, setStatus] = useState('idle'); // idle, running, completed, error, cancelled
   const [error, setError] = useState('');
   const [result, setResult] = useState(null);
   const [logs, setLogs] = useState([]);
@@ -47,9 +47,29 @@ export default function App() {
               const logsRes = await getScanLogs(url);
               if (logsRes.logs) setLogs(logsRes.logs);
             } catch (e) {}
+          } else if (res.status === 'cancelled') {
+            setStatus('cancelled');
+            setError('Scan was cancelled by user.');
+            try {
+              const data = await getScanResults(url);
+              setResult(data);
+            } catch (e) {
+              // Partial results may not be available
+            }
+            try {
+              const logsRes = await getScanLogs(url);
+              if (logsRes.logs) setLogs(logsRes.logs);
+            } catch (e) {}
           } else if (res.status === 'error') {
             setStatus('error');
             setError('The scan failed due to an error on the server.');
+          } else if (res.status === 'interrupted') {
+            setStatus('cancelled');
+            setError('Scan was interrupted — the server was restarted while the scan was running.');
+            try {
+              const logsRes = await getScanLogs(url);
+              if (logsRes.logs) setLogs(logsRes.logs);
+            } catch (e) {}
           }
         } catch (err) {
           console.error('Polling error', err);
@@ -94,6 +114,17 @@ export default function App() {
       const message = err?.response?.data?.error || 'Failed to start scan';
       setError(message);
       setStatus('error');
+    }
+  };
+
+  const handleCancel = async () => {
+    try {
+      await cancelScan(url);
+      setStatus('cancelled');
+      setError('Scan cancellation requested...');
+    } catch (err) {
+      const message = err?.response?.data?.error || 'Failed to cancel scan';
+      setError(message);
     }
   };
 
@@ -212,13 +243,35 @@ export default function App() {
             >
               {status === 'running' ? 'Scanning...' : 'Start Scan'}
             </button>
+            {status === 'running' && (
+              <button
+                type="button"
+                id="stop-scan-btn"
+                onClick={handleCancel}
+                className="rounded-xl bg-gradient-to-r from-red-600 to-red-500 px-8 py-3 font-semibold text-white shadow-lg shadow-red-500/20 hover:shadow-red-500/40 transition-all flex items-center gap-2"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+                </svg>
+                Stop Scan
+              </button>
+            )}
           </form>
           {status === 'error' && (
             <p className="mt-4 rounded-xl bg-red-500/10 border border-red-500/20 p-3 text-red-400 text-sm">
               {error || 'The scan encountered a critical error and could not complete.'}
             </p>
           )}
-          {error && status !== 'error' && (
+          {status === 'cancelled' && (
+            <div className="mt-4 rounded-xl bg-amber-500/10 border border-amber-500/20 p-4 flex items-center gap-3">
+              <svg className="h-5 w-5 text-amber-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+              <span className="text-amber-400 text-sm font-medium">Scan was cancelled. Partial results may be available below.</span>
+            </div>
+          )}
+          {error && status !== 'error' && status !== 'cancelled' && (
             <p className="mt-4 rounded-xl bg-red-500/10 border border-red-500/20 p-3 text-red-400 text-sm">{error}</p>
           )}
         </section>
@@ -261,7 +314,7 @@ export default function App() {
         )}
 
         {/* ── Logs ── */}
-        {(status === 'running' || status === 'completed') && (
+        {(status === 'running' || status === 'completed' || status === 'cancelled') && (
           <section className="mt-8">
             <ScanLogs logs={logs} status={status} downloadLogs={downloadLogs} />
           </section>
