@@ -14,6 +14,8 @@ import sqlite3
 from core.engine import ScannerEngine, RUNNING_SCANS
 from security import validate_target_url
 from database import DB_PATH, has_running_scan
+from core.recommendations import enrich_owasp_results
+
 
 load_dotenv()
 
@@ -186,6 +188,9 @@ def scan_results():
             "findings": json.loads(r[6]) if r[6] else []
         })
 
+    owasp_results = enrich_owasp_results(owasp_results, tech_stack)
+
+
     # Get raw vulnerabilities
     cursor.execute(
         "SELECT type, url, parameter, payload, severity, description, owasp_category "
@@ -277,6 +282,9 @@ def scan_report():
             "recommendation": r[5],
             "findings": json.loads(r[6]) if r[6] else []
         })
+
+    owasp_results = enrich_owasp_results(owasp_results, tech_stack)
+
 
     # Vulnerabilities
     cursor.execute(
@@ -427,6 +435,9 @@ def historical_scan_report(scan_id):
             "recommendation": r[5],
             "findings": json.loads(r[6]) if r[6] else []
         })
+
+    owasp_results = enrich_owasp_results(owasp_results, tech_stack)
+
 
     # Get raw vulnerabilities
     cursor.execute(

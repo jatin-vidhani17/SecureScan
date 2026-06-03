@@ -120,3 +120,16 @@ securescan/
 
 **Q5: How did you implement Sensitive Data Exposure detection?**
 *Answer:* I used Python's `re` (RegEx) module to scan the entire text payload of the HTTP response against known patterns for India Phone Numbers, Email Addresses, and Cloud API Keys (like AWS/Stripe).
+
+**Q6: Why does the dashboard sometimes show 3 failed OWASP categories but only 1 detailed vulnerability card?**
+*Answer:* The OWASP Top 10 Assessment table represents category-level test results. If a test fails to complete—such as due to a connection timeout—its status is flagged as `fail` to alert the administrator. However, since the network timed out, no response contents were retrieved to extract individual evidence elements, meaning the category has empty findings (`[]`). Only tests with concrete, parsed finding items (or hits from active detectors) are populated in the separate `vulnerabilities` table which feeds the Detailed Findings list.
+
+**Q7: How does your scanner detect the technologies/frameworks of target websites?**
+*Answer:* It uses a passive fingerprinting approach in `TechStackDetector`. It scans the HTTP response headers (e.g., `Server` for Flask/Werkzeug, `X-Powered-By` for Express), looks for session cookies (such as `laravel_session` or `csrftoken`), and checks the HTML body for DOM elements like React root tags (`<div id="root">`), Vue attributes (`data-v-`), or WordPress folders (`wp-content`).
+
+**Q8: How did you implement the Remediation Recommendations? Are they stored in the database?**
+*Answer:* To optimize storage and system scalability, the remediation tips are **not** stored statically in the database. Instead, I built a dynamic recommendations engine in `recommendations.py`. When the API fetches a scan report, it retrieves the scan's detected `tech_stack` and merges the generic OWASP results with framework-specific reasons, tips, and code templates in-memory. This design keeps the SQLite database lightweight and allows us to update or expand remediation instructions for all scans instantly by simply updating the python code dictionary.
+
+**Q9: How is the click-to-copy functionality handled on the frontend?**
+*Answer:* I added a copy utility inside the expanded rows of `OWASPTable.jsx`. When the user clicks the copy button, it executes `navigator.clipboard.writeText(...)` to copy the framework-specific code snippet to the clipboard. The button updates to show a checkmark and "Copied!" text, using a `setTimeout` hook to reset back to "Copy Code" after 2 seconds to provide smooth user feedback.
+

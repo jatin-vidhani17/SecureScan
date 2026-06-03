@@ -267,8 +267,10 @@ SecureScan/
 │   ├── core/
 │   │   ├── engine.py           # Main scan orchestrator
 │   │   ├── owasp_tests.py      # 10 OWASP test functions
+│   │   ├── recommendations.py  # Tech-stack specific advice & codes
 │   │   ├── scoring.py          # Score calculation engine
 │   │   └── techstack.py        # Tech stack fingerprinting
+
 │   ├── crawler/
 │   │   └── crawler.py          # BFS web crawler
 │   ├── detectors/
@@ -383,9 +385,44 @@ for result in owasp_results:
 score = round((total_score / max_possible) * 100)
 ```
 
+### 6.7 Context-Aware Recommendations Engine (recommendations.py)
+
+To bridge the gap between detecting a vulnerability and helping the developer fix it, SecureScan includes a framework-aware recommendations system. Rather than storing static recommendations in the SQLite database, the backend dynamically enriches the report data in-memory when sending results to the frontend.
+
+**Lookups and Mappings:**
+- The engine maps the detected primary `tech_stack` (from `techstack.py`) to corresponding recommendation structures.
+- It translates names (e.g., `asp_net` → `aspnet`, `nodejs` → `express`).
+- For each OWASP category (A01–A10), it defines a specific:
+  - **Reason**: Explaining why this vulnerability presents an active security risk in that environment.
+  - **Actionable Remediation Tips**: A list of detailed, framework-specific steps (such as enabling specific Django middlewares or avoiding Laravel raw SQL syntax).
+  - **Remediation Code Example**: A copy-pasteable, syntax-safe code sample demonstrating secure programming practices in that framework.
+
+**Enrichment Call Flow:**
+When the React frontend queries `/api/scan/results` or fetches a historical PDF/JSON report, Flask retrieves the raw database scan records and applies the enrichment engine:
+
+```python
+def enrich_owasp_results(owasp_results: List[Dict[str, Any]], tech_stack: str) -> List[Dict[str, Any]]:
+    if not tech_stack:
+        tech_stack = "default"
+    tech_key = TECH_STACK_MAPPING.get(tech_stack.lower(), "default")
+    enriched = []
+    for r in owasp_results:
+        details = RECOMMENDATIONS.get(r.get("owasp_id"), {}).get(tech_key, ...)
+        r_copy = dict(r)
+        r_copy["reason"] = details.get("reason", "")
+        r_copy["tips"] = details.get("tips", [])
+        r_copy["code_snippet"] = details.get("code_snippet", "")
+        enriched.append(r_copy)
+    return enriched
+```
+
+This in-memory enrichment keeps the SQLite schema lightweight, requires zero database migrations as security recommendations are updated, and ensures past scans instantly display updated security advice.
+
 ---
 
 ## 7. OWASP Top 10 — Test Implementation Details
+
+SecureScan maps its active and passive scans to the 10 standard OWASP security check categories. For failed checks, the dashboard dynamically enriches the raw vulnerability data with tailored remediation content from `recommendations.py`. If a specific framework (like Laravel, Django, Flask, Express, or PHP) is fingerprinted, the dashboard renders tailored reasons, step-by-step lists of actionable tips, and copy-pasteable code examples to resolve the flaw.
 
 ### A01: Broken Access Control
 
@@ -694,4 +731,6 @@ See `sample_scan_output.json` for the complete response structure.
 
 ---
 
-*Document generated for SecureScan v2.0 — IGNOU MCA Project*
+*Document generated for SecureScan v2.0 — IGNOU MCA Project*  
+*Assisted and developed in collaboration with Antigravity, an AI coding assistant designed by Google DeepMind.*
+
